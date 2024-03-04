@@ -12,13 +12,15 @@
     <!-- Aggiungi questo tag nel tuo file HTML per includere la libreria di Font Awesome -->
     <script
       defer
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
+    ></script>
     <!-- Theme favicon -->
     <link rel="shortcut icon" href="assets/favicon-c43f27ef.ico" />
     <!-- Toaster CDN -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!--  Head js -->
@@ -26,15 +28,14 @@
     <script
       type="module"
       crossorigin
-      src="assets/product-range-2302f40f.js"></script>
+      src="assets/product-range-2302f40f.js"
+    ></script>
     <script
       type="module"
       crossorigin
-      src="assets/form-input-spin-59c6a334.js"></script>
-    <script
-      type="module"
-      crossorigin
-      src="assets/custom-javascript.js"></script>
+      src="assets/form-input-spin-59c6a334.js"
+    ></script>
+    <script type="module" crossorigin src="assets/chiamata-api.js"></script>
     <script type="module" crossorigin src="assets/riepilogo.js"></script>
 
     <link rel="stylesheet" href="assets/theme-c9540983.css" />
@@ -45,11 +46,13 @@
     <!-- Preloader -->
     <div
       id="preloader"
-      class="fixed inset-0 z-70 bg-default-50 transition-all visible opacity-100 h-screen w-screen flex items-center justify-center">
+      class="fixed inset-0 z-70 bg-default-50 transition-all visible opacity-100 h-screen w-screen flex items-center justify-center"
+    >
       <div
         class="animate-spin inline-block w-10 h-10 border-4 border-t-transparent border-primary rounded-full"
         role="status"
-        aria-label="loading">
+        aria-label="loading"
+      >
         <span class="sr-only">Loading...</span>
       </div>
     </div>
@@ -59,7 +62,8 @@
     <!-- Main Navigation Menu -->
     <header
       id="navbar"
-      class="sticky top-0 z-20 border-b border-default-200 bg-transparent transition-all">
+      class="sticky top-0 z-20 border-b border-default-200 bg-transparent transition-all"
+    >
       <div class="lg:h-20 h-14 flex items-center">
         <div class="container">
           <div class="grid lg:grid-cols-3 grid-cols-2 items-center gap-4">
@@ -68,10 +72,12 @@
               <button
                 style="display: none"
                 class="lg:hidden block"
-                data-hs-overlay="#mobile-menu">
+                data-hs-overlay="#mobile-menu"
+              >
                 <i
                   data-lucide="menu"
-                  class="w-7 h-7 text-default-600 me-4 hover:text-primary"></i>
+                  class="w-7 h-7 text-default-600 me-4 hover:text-primary"
+                ></i>
               </button>
 
               <!-- Navbar Brand Logo -->
@@ -79,18 +85,21 @@
                 <img
                   src="assets/Logo_popolare_2024x500_trasparente.png"
                   alt="logo"
-                  class="h-18 mh-12 flex dark:hidden" />
+                  class="h-18 mh-12 flex dark:hidden"
+                />
                 <img
                   src="assets/Logo_popolare_2024x500_trasparente.png"
                   alt="logo"
-                  class="h-18 mh-12 hidden dark:flex" />
+                  class="h-18 mh-12 hidden dark:flex"
+                />
               </a>
             </div>
 
             <!-- Nevigation Menu -->
             <ul
               style="display: none"
-              class="menu lg:flex items-center justify-center hidden relative">
+              class="menu lg:flex items-center justify-center hidden relative"
+            >
               <!-- Home Menu -->
               <li class="menu-item">
                 <a
@@ -103,7 +112,8 @@
               <!-- Product Menu -->
               <li class="menu-item">
                 <div
-                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]">
+                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]"
+                >
                   <a
                     class="hs-dropdown-toggle after:absolute hover:after:-bottom-10 after:inset-0 inline-flex items-center text-sm lg:text-base font-medium text-default-700 py-2 px-4 rounded-full hover:text-primary"
                     href="javascript:void(0)"
@@ -112,7 +122,8 @@
                   ></a>
 
                   <div
-                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-10 bg-white shadow-lg rounded-lg border border-default-100 p-1.5 dark:bg-default-50">
+                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-10 bg-white shadow-lg rounded-lg border border-default-100 p-1.5 dark:bg-default-50"
+                  >
                     <ul class="flex flex-col gap-1">
                       <li>
                         <a
@@ -143,97 +154,117 @@
               <!-- Mega Menu -->
               <li class="menu-item">
                 <div
-                  class="hs-dropdown relative inline-flex [--trigger:hover] [--auto-close:inside]">
+                  class="hs-dropdown relative inline-flex [--trigger:hover] [--auto-close:inside]"
+                >
                   <a
                     class="hs-dropdown-toggle after:absolute hover:after:-bottom-10 after:inset-0 inline-flex items-center text-sm whitespace-nowrap lg:text-base font-medium text-default-700 py-2 px-4 rounded-full hover:text-primary"
-                    href="javascript:void(0)">
+                    href="javascript:void(0)"
+                  >
                     Mega Menu
                     <i class="w-4 h-4 ms-2" data-lucide="chevron-down"></i>
                   </a>
 
                   <div
-                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 top-full inset-x-0 w-full min-w-full absolute mt-4 transition-[opacity,margin] opacity-0 hidden z-10 duration-300">
+                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 top-full inset-x-0 w-full min-w-full absolute mt-4 transition-[opacity,margin] opacity-0 hidden z-10 duration-300"
+                  >
                     <div class="container">
                       <div
-                        class="bg-white shadow-lg rounded-lg border border-default-200 overflow-hidden dark:bg-default-50">
+                        class="bg-white shadow-lg rounded-lg border border-default-200 overflow-hidden dark:bg-default-50"
+                      >
                         <div class="grid grid-cols-12">
                           <div class="col-span-2 text-sm">
                             <div
-                              class="bg-default-100 h-full w-full py-10 px-6">
+                              class="bg-default-100 h-full w-full py-10 px-6"
+                            >
                               <nav
                                 aria-label="Tabs"
                                 class="flex flex-col space-y-3.5"
                                 data-hs-tabs-vertical="true"
-                                role="tablist">
+                                role="tablist"
+                              >
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all active"
                                   data-hs-tab="#wraps"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Wraps
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#noodles"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Noodles
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#mexican"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Mexican cuisine
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#tacos"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Tacos
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#smart-meals"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Smart Meals
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#burger"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Burger
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                                 <button
                                   class="hs-tab-active:text-primary !bg-transparent inline-flex items-center text-base font-medium text-default-600 hover:text-primary transition-all"
                                   data-hs-tab="#beverages-desserts"
                                   role="tab"
-                                  type="button">
+                                  type="button"
+                                >
                                   Beverages & Desserts
                                   <i
                                     class="w-5 h-5 ms-auto"
-                                    data-lucide="chevron-right"></i>
+                                    data-lucide="chevron-right"
+                                  ></i>
                                 </button>
                               </nav>
                             </div>
@@ -243,10 +274,12 @@
                             <div class="py-10">
                               <div id="wraps" role="tabpanel">
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Bean-Based Wraps
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -283,7 +316,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Grilled Vegetable Wraps
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -320,7 +354,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Cheese and Spinach Wraps
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -350,7 +385,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Chicken Wraps
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -389,10 +425,12 @@
 
                               <div class="hidden" id="noodles" role="tabpanel">
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Italian Pasta Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -436,7 +474,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Asian Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -494,7 +533,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Chinese Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -538,7 +578,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Japanese Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -577,10 +618,12 @@
 
                               <div class="hidden" id="mexican" role="tabpanel">
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Thai Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -617,7 +660,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Indian Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -647,7 +691,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Korean Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -684,7 +729,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Western Noodle Dishes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -723,10 +769,12 @@
 
                               <div class="hidden" id="tacos" role="tabpanel">
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Tacos
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -770,7 +818,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Enchiladas
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -807,7 +856,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Tamales
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -837,7 +887,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Quesadillas
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -870,12 +921,15 @@
                               <div
                                 class="hidden"
                                 id="smart-meals"
-                                role="tabpanel">
+                                role="tabpanel"
+                              >
                                 <div
-                                  class="grid grid-cols-3 divide-x divide-default-200">
+                                  class="grid grid-cols-3 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Balanced Meals
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -900,7 +954,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Low-Carb Meals
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -925,7 +980,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       High-Protein Meals
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -952,10 +1008,12 @@
 
                               <div class="hidden" id="burger" role="tabpanel">
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Classic Burgers
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -999,7 +1057,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Patty Variations
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1050,7 +1109,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Flavorful Toppings
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1101,7 +1161,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Breakfast Burger
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1148,12 +1209,15 @@
                               <div
                                 class="hidden"
                                 id="beverages-desserts"
-                                role="tabpanel">
+                                role="tabpanel"
+                              >
                                 <div
-                                  class="grid grid-cols-4 divide-x divide-default-200">
+                                  class="grid grid-cols-4 divide-x divide-default-200"
+                                >
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Coffee Based
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1204,7 +1268,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Tea
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1248,7 +1313,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Cakes
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1285,7 +1351,8 @@
 
                                   <div class="ps-6">
                                     <h6
-                                      class="text-base font-medium text-default-800">
+                                      class="text-base font-medium text-default-800"
+                                    >
                                       Cookies & Pastries
                                     </h6>
                                     <ul class="grid space-y-3 mt-4">
@@ -1347,16 +1414,19 @@
               <!-- Pages Menu -->
               <li class="menu-item">
                 <div
-                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]">
+                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]"
+                >
                   <a
                     class="hs-dropdown-toggle after:absolute hover:after:-bottom-10 after:inset-0 inline-flex items-center text-sm lg:text-base font-medium text-default-700 py-2 px-4 rounded-full hover:text-primary"
-                    href="javascript:void(0)">
+                    href="javascript:void(0)"
+                  >
                     Pages
                     <i class="w-4 h-4 ms-2" data-lucide="chevron-down"></i>
                   </a>
 
                   <div
-                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-10 bg-white shadow-md rounded-lg border border-default-100 p-1.5 dark:bg-default-50">
+                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-10 bg-white shadow-md rounded-lg border border-default-100 p-1.5 dark:bg-default-50"
+                  >
                     <ul class="flex flex-col gap-1">
                       <li>
                         <a
@@ -1446,13 +1516,15 @@
 
             <ul
               style="display: none"
-              class="flex items-center justify-end gap-x-6">
+              class="flex items-center justify-end gap-x-6"
+            >
               <!-- Search Form Input -->
               <li class="2xl:flex relative menu-item hidden">
                 <input
                   class="ps-10 pe-4 py-2.5 block w-64 border-transparent placeholder-primary-500 rounded-full text-sm bg-primary-400/40 text-primary"
                   placeholder="Search for items..."
-                  type="search" />
+                  type="search"
+                />
                 <span class="absolute start-4 top-3">
                   <i class="w-4 h-4 text-primary-500" data-lucide="search"></i>
                 </span>
@@ -1462,7 +1534,8 @@
               <li class="2xl:hidden flex menu-item">
                 <button
                   data-hs-overlay="#mobileSearchSidebar"
-                  class="relative flex text-base transition-all text-default-600 hover:text-primary">
+                  class="relative flex text-base transition-all text-default-600 hover:text-primary"
+                >
                   <i class="w-5 h-5" data-lucide="search"></i>
                 </button>
               </li>
@@ -1471,7 +1544,8 @@
               <li class="flex menu-item">
                 <a
                   href="cart.html"
-                  class="relative flex text-base transition-all text-default-600 hover:text-primary">
+                  class="relative flex text-base transition-all text-default-600 hover:text-primary"
+                >
                   <i class="w-5 h-5" data-lucide="shopping-bag"></i>
                   <span
                     class="absolute z-10 -top-2.5 end-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 bg-red-500 rounded-full"
@@ -1483,15 +1557,18 @@
               <!-- User Dropdown -->
               <li class="flex menu-item">
                 <div
-                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]">
+                  class="hs-dropdown relative inline-flex [--trigger:hover] [--placement:bottom]"
+                >
                   <a
                     class="hs-dropdown-toggle after:absolute hover:after:-bottom-10 after:inset-0 relative flex items-center text-base transition-all text-default-600 hover:text-primary"
-                    href="javascript:void(0)">
+                    href="javascript:void(0)"
+                  >
                     <i class="w-5 h-5" data-lucide="user"></i>
                   </a>
 
                   <div
-                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-20 bg-white shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] rounded-lg border border-default-100 p-1.5 dark:bg-default-50">
+                    class="hs-dropdown-menu hs-dropdown-open:opacity-100 min-w-[200px] transition-[opacity,margin] mt-4 opacity-0 hidden z-20 bg-white shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] rounded-lg border border-default-100 p-1.5 dark:bg-default-50"
+                  >
                     <ul class="flex flex-col gap-1">
                       <li>
                         <a
@@ -1547,13 +1624,16 @@
             class="hs-overlay hs-overlay-open:translate-x-0 hidden max-w-xs lg:w-1/4 w-full -translate-x-full fixed top-0 start-0 transition-all transform h-full z-60 lg:z-auto bg-white lg:translate-x-0 lg:block lg:static lg:start-auto dark:bg-default-50"
             id="filter_Offcanvas"
             tabindex="-1"
-            style="max-width: 200px">
+            style="max-width: 200px"
+          >
             <div
-              class="flex justify-between items-center py-3 px-4 border-b border-default-200 lg:hidden">
+              class="flex justify-between items-center py-3 px-4 border-b border-default-200 lg:hidden"
+            >
               <button
                 class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-default-500 hover:text-default-700 text-sm"
                 data-hs-overlay="#filter_Offcanvas"
-                type="button">
+                type="button"
+              >
                 <span class="sr-only">Close modal</span>
                 <i class="h-5 w-5" data-lucide="x"></i>
               </button>
@@ -1561,22 +1641,26 @@
 
             <div
               class="h-[calc(100vh-128px)] overflow-y-auto lg:h-auto"
-              data-simplebar>
+              data-simplebar
+            >
               <div class="p-6 lg:p-0 divide-y divide-default-200">
                 <div>
                   <button
                     class="hs-collapse-toggle py-4 inline-flex justify-between items-center gap-2 transition-all uppercase font-medium text-lg text-default-900 w-full open"
                     data-hs-collapse="#all_categories"
                     id="hs-basic-collapse"
-                    type="button">
+                    type="button"
+                  >
                     Categorie
                   </button>
                   <div
                     class="hs-collapse w-full overflow-hidden transition-[height] duration-300 open"
-                    id="all_categories">
+                    id="all_categories"
+                  >
                     <div
                       id="category-list"
-                      class="relative flex flex-col space-y-4 mb-6">
+                      class="relative flex flex-col space-y-4 mb-6"
+                    >
                       <!-- Categorie Dinamico -->
                     </div>
                   </div>
@@ -1588,12 +1672,14 @@
 
           <div class="lg:w-3/4 lg:max-w-full">
             <div
-              class="md:hidden flex flex-wrap md:flex-nowrap items-center justify-between gap-4 mb-10">
+              class="md:hidden flex flex-wrap md:flex-nowrap items-center justify-between gap-4 mb-10"
+            >
               <div class="flex flex-wrap md:flex-nowrap items-center gap-4">
                 <button
                   class="inline-flex lg:hidden items-center gap-4 text-sm py-2.5 px-4 xl:px-5 rounded-full text-default-950 border border-default-200 transition-all"
                   data-hs-overlay="#filter_Offcanvas"
-                  type="button">
+                  type="button"
+                >
                   Categorie <i class="h-4 w-4" data-lucide="settings-2"></i>
                 </button>
               </div>
@@ -1602,7 +1688,8 @@
             <!-- Finestra centrale -->
             <div
               id="container-menu"
-              class="grid xl:grid-cols-4 sm:grid-cols-2 gap-5 mb-6">
+              class="grid xl:grid-cols-4 sm:grid-cols-2 gap-5 mb-6"
+            >
               <!-- Menu Dinamico -->
             </div>
 
@@ -1628,7 +1715,8 @@
               </div>
 
               <button
-                class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">
+                class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500"
+              >
                 Conto
               </button>
             </div>
@@ -1809,14 +1897,17 @@
 
     <!-- Back to Top & Light/Dark Toggle -->
     <div
-      class="fixed lg:bottom-5 end-5 bottom-18 flex flex-col items-center bg-primary/25 rounded-full z-10">
+      class="fixed lg:bottom-5 end-5 bottom-18 flex flex-col items-center bg-primary/25 rounded-full z-10"
+    >
       <button
         class="h-0 w-8 opacity-0 flex justify-center items-center transition-all duration-500 translate-y-5 z-10"
-        data-toggle="back-to-top">
+        data-toggle="back-to-top"
+      >
         <i class="h-5 w-5 text-primary-500 mt-1" data-lucide="chevron-up"></i>
       </button>
       <button
-        class="rounded-full h-10 w-10 bg-primary text-white flex justify-center items-center z-20">
+        class="rounded-full h-10 w-10 bg-primary text-white flex justify-center items-center z-20"
+      >
         <i class="h-5 w-5" data-lucide="sun" id="light-theme"></i>
         <i class="h-5 w-5" data-lucide="moon" id="dark-theme"></i>
       </button>
