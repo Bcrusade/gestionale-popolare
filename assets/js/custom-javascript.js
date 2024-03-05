@@ -1,10 +1,10 @@
 // Funzione principale che viene eseguita una volta che il DOM è pronto
 document.addEventListener("DOMContentLoaded", function () {
-  // URL dell'API da cui ottenere i dati JSON
-  const apiUrl = "https://dev-c66hrfvbn433u4q.api.raw-labs.com/mock/json-api";
+  // URL del file JSON esterno
+  const jsonUrl = "assets/lista_festa.json";
 
-  // Carica i dati JSON dall'API e avvia l'applicazione
-  loadExternalJsonAndInitialize(apiUrl);
+  // Carica il JSON esterno e avvia l'applicazione
+  loadExternalJsonAndInitialize(jsonUrl);
 });
 
 // Dichiarazione della variabile globale
@@ -13,11 +13,11 @@ let prezzoIniziale = 0;
 // Oggetto per memorizzare le variabili prezzoIniziale associate agli ID del menu
 const prezzoInizialeMap = {};
 
-// Modifica la funzione loadExternalJsonAndInitialize per utilizzare la chiamata API
-async function loadExternalJsonAndInitialize(apiUrl) {
+// Funzione per caricare il JSON esterno e inizializzare l'applicazione
+async function loadExternalJsonAndInitialize(jsonUrl) {
   try {
-    const response = await fetch(apiUrl); // Esegui la chiamata API
-    const json = await response.json(); // Estrai i dati JSON dalla risposta
+    const response = await fetch(jsonUrl);
+    const json = await response.json();
 
     // Inizializza l'applicazione con il JSON caricato
     initializeApp(json);
@@ -28,7 +28,7 @@ async function loadExternalJsonAndInitialize(apiUrl) {
     );
     primaCategoriaCheckbox.click();
   } catch (error) {
-    console.error("Errore nel caricamento dei dati dall'API:", error);
+    console.error("Errore nel caricamento del JSON esterno:", error);
   }
 }
 
@@ -114,13 +114,13 @@ function initializeApp(json) {
       objectDiv.id = objectDetails.ID;
       objectDiv.className = "flex items-center mb-4";
       objectDiv.innerHTML = `
-        <!-- <img src="${objectDetails.img}" class="h-20 w-20 me-2"> -->
-        <div>
-          <h4 class="text-sm text-default-600 mb-2">${objectDetails.name}</h4>
-          <h4 class="text-sm text-default-400">${objectDetails.quantity} x <span class="text-primary font-semibold">€${objectDetails.price}</span></h4>
-          <button>X</button>
-          </div>
-      `;
+      <!-- <img src="${objectDetails.img}" class="h-20 w-20 me-2"> -->
+      <div>
+        <h4 class="text-sm text-default-800 mb-2">${objectDetails.name}</h4>
+        <h4 class="text-sm text-default-400">${objectDetails.quantity} x <span class="text-primary font-semibold">€${objectDetails.price}</span></h4>
+        <button>X</button>
+        </div>
+    `;
 
       // Aggiungere il listener di evento al pulsante "X"
       const deleteButton = objectDiv.querySelector("button");
@@ -230,32 +230,32 @@ function initializeApp(json) {
         }
 
         menuElement.innerHTML = `
-            
-        <div class="relative rounded-lg overflow-hidden divide-y divide-default-200 group">
-          <div class="mb-4 mx-auto">
-            <img class="w-full h-full group-hover:scale-105 transition-all" src="${oggetto.img}" />
-          </div>
-  
-          <div class="pt-2">
-            <div style="    flex-flow: column;" class="flex justify-between mb-4">
-              <a class="text-default-800 text-xl font-semibold line-clamp-1 after:absolute after:inset-0" href="product-detail.html">${oggetto.name}</a>
-              <i class="text-m text-default-500">${oggetto.desc}</i>
-            </div>
-  
-            <div class="flex items-end justify-between mb-4">
-              <h4 class="font-semibold text-xl text-default-900">€ ${oggetto.price}</h4>
-              <div class="relative z-10 inline-flex justify-between border border-default-200 p-1 rounded-full">
-                <button class="minus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">–</button>
-                <input class="w-8 border-0 text-sm text-center text-default-800 focus:ring-0 p-0 bg-transparent" max="100" min="0" readonly="" type="text" value="1" />
-                <button class="plus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">+</button>
-              </div>
-            </div>
-  
-            <a id="add-cart" class="relative z-10 w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" href="cart.html">Aggiungi al carrello</a>
-          </div>
+          
+      <div class="relative rounded-lg overflow-hidden divide-y divide-default-200 group">
+        <div class="mb-4 mx-auto">
+          <img class="w-full h-full group-hover:scale-105 transition-all" src="${oggetto.img}" />
         </div>
-      
-            `;
+
+        <div class="pt-2">
+          <div style="    flex-flow: column;" class="flex justify-between mb-4">
+            <a class="text-default-800 text-xl font-semibold line-clamp-1 after:absolute after:inset-0" href="product-detail.html">${oggetto.name}</a>
+            <i class="text-m text-default-500">${oggetto.desc}</i>
+          </div>
+
+          <div class="flex items-end justify-between mb-4">
+            <h4 class="font-semibold text-xl text-default-900">€ ${oggetto.price}</h4>
+            <div class="relative z-10 inline-flex justify-between border border-default-200 p-1 rounded-full">
+              <button class="minus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">–</button>
+              <input class="w-8 border-0 text-sm text-center text-default-800 focus:ring-0 p-0 bg-transparent" max="100" min="0" readonly="" type="text" value="1" />
+              <button class="plus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">+</button>
+            </div>
+          </div>
+
+          <a id="add-cart" class="relative z-10 w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" href="cart.html">Aggiungi al carrello</a>
+        </div>
+      </div>
+    
+          `;
 
         // Aggiungi eventi di click ai pulsanti e all'elemento "add-cart"
         const minusButton = menuElement.querySelector(".minus");

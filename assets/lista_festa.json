@@ -41,49 +41,49 @@
     {
       "name": "Hamburger",
       "desc": "Pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Cheeseburger",
       "desc": "Formaggio, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Baconburger",
       "desc": "Formaggio, bacon, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Wurstel",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Wurstel e Crauti",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Salamella",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Salamella con Cipolle",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     },
     {
       "name": "Vegetariano",
       "desc": "Mozzarella, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "9.50"
     }
   ],
@@ -91,49 +91,49 @@
     {
       "name": "Hamburger",
       "desc": "Pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Cheeseburger",
       "desc": "Formaggio, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Baconburger",
       "desc": "Formaggio, bacon, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Wurstel",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Wurstel e Crauti",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Salamella",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Salamella con Cipolle",
       "desc": "",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     },
     {
       "name": "Vegetariano",
       "desc": "Mozzarella, pomodori e insalata",
-      "img": "assets/burger-dee4db61.png",
+      "img": "assets/img/burger-dee4db61.png",
       "price": "8.50"
     }
   ],
@@ -203,7 +203,7 @@
     {
       "name": "Margherita",
       "desc": "",
-      "img": "assets/pizza-2-3b9c935a.png",
+      "img": "assets/img/pizza-2-3b9c935a.png",
       "price": "4.50"
     },
     {

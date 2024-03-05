@@ -24,22 +24,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!--  Head js -->
-    <script type="module" crossorigin src="assets/theme-b118ffc1.js"></script>
     <script
       type="module"
       crossorigin
-      src="assets/product-range-2302f40f.js"
+      src="assets/js/theme-b118ffc1.js"
     ></script>
     <script
       type="module"
       crossorigin
-      src="assets/form-input-spin-59c6a334.js"
+      src="assets/js/product-range-2302f40f.js"
     ></script>
-    <script type="module" crossorigin src="assets/chiamata-api.js"></script>
-    <script type="module" crossorigin src="assets/riepilogo.js"></script>
-
-    <link rel="stylesheet" href="assets/theme-c9540983.css" />
-    <link rel="stylesheet" href="assets/custom.css" />
+    <script
+      type="module"
+      crossorigin
+      src="assets/js/form-input-spin-59c6a334.js"
+    ></script>
+    <script type="module" crossorigin src="assets/js/chiamata-api.js"></script>
+    <link rel="stylesheet" href="assets/css/theme-c9540983.css" />
+    <link rel="stylesheet" href="assets/css/custom.css" />
   </head>
 
   <body>
@@ -83,12 +85,12 @@
               <!-- Navbar Brand Logo -->
               <a href="home.html">
                 <img
-                  src="assets/Logo_popolare_2024x500_trasparente.png"
+                  src="assets/img/Logo_popolare_2024x500_trasparente.png"
                   alt="logo"
                   class="h-18 mh-12 flex dark:hidden"
                 />
                 <img
-                  src="assets/Logo_popolare_2024x500_trasparente.png"
+                  src="assets/img/Logo_popolare_2024x500_trasparente.png"
                   alt="logo"
                   class="h-18 mh-12 hidden dark:flex"
                 />
@@ -1696,7 +1698,7 @@
             <!-- end grid -->
             <!-- end flex -->
           </div>
-          <div class="mb-5">
+          <div class="mb-5 lg:w-1/4 w-full">
             <div class="border border-default-200 rounded-lg p-5">
               <h4 class="text-lg font-semibold text-default-700 mb-5">
                 Riepilogo
@@ -1707,18 +1709,26 @@
               <div class="mb-6">
                 <div class="border-b border-default-200 my-4"></div>
                 <div class="flex justify-between mb-3">
-                  <p class="text-base text-default-700">Totale</p>
+                  <p class="text-base text-default-700 font-bold">Totale</p>
                   <p id="Totale" class="text-base text-default-700 font-medium">
                     <!-- Totale Dinamico -->
                   </p>
                 </div>
               </div>
-
-              <button
-                class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500"
-              >
-                Conto
-              </button>
+              <div class="hs-collapse w-full overflow-hidden transition-[height] duration-300 open" id="all_categories">
+                <div id="checkbox-utente" class="relative flex flex-col space-y-4 mb-6">
+                    <div class="flex items-center">
+                      <input class="form-checkbox rounded-full text-primary border-default-400 bg-transparent w-5 h-5 focus:ring-0 focus:ring-transparent ring-offset-0 cursor-pointer" id="Client" name="all" type="checkbox" onclick="toggleCheck('Client', 'Guest')">                        
+                      <label class="ps-3 inline-flex items-center text-default-600 text-sm select-none" for="Client">Cliente</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input class="form-checkbox rounded-full text-primary border-default-400 bg-transparent w-5 h-5 focus:ring-0 focus:ring-transparent ring-offset-0 cursor-pointer" id="Guest" name="all" type="checkbox" onclick="toggleCheck('Guest', 'Client')">
+                      <label class="ps-3 inline-flex items-center text-default-600 text-sm select-none" for="Guest">Volontario</label>
+                    </div>
+                </div>
+                <button id="check-out" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" onclick="saveSelectedInput()">
+                  Conto
+                </button>
             </div>
           </div>
         </div>
@@ -1893,7 +1903,30 @@
       </div>
     </footer> -->
 
-    <script></script>
+<script>    
+    
+let GuestTypeSelectedInput = null;
+
+function toggleCheck(checkedId, uncheckedId) {
+  var checkedCheckbox = document.getElementById(checkedId);
+  var uncheckedCheckbox = document.getElementById(uncheckedId);
+
+  if (checkedCheckbox.checked) {
+    uncheckedCheckbox.checked = false;
+    GuestTypeSelectedInput = checkedId; // Salva l'id del checkbox selezionato nella variabile globale
+  }
+}
+
+function saveSelectedInput() {
+  if (GuestTypeSelectedInput !== null) {
+    console.log("Id del checkbox selezionato: " + GuestTypeSelectedInput);
+    // Puoi fare ulteriori azioni con l'id salvato qui
+  } else {
+    console.log("Nessun checkbox selezionato.");
+  }
+}
+  
+</script>
 
     <!-- Back to Top & Light/Dark Toggle -->
     <div

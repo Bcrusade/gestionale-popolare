@@ -1,23 +1,39 @@
 // Funzione principale che viene eseguita una volta che il DOM è pronto
 document.addEventListener("DOMContentLoaded", function () {
-  // URL del file JSON esterno
-  const jsonUrl = "assets/lista_festa.json";
+  // URL dell'API da cui ottenere i dati JSON
+  const apiUrl = "https://dev-c66hrfvbn433u4q.api.raw-labs.com/mock/json-api";
 
-  // Carica il JSON esterno e avvia l'applicazione
-  loadExternalJsonAndInitialize(jsonUrl);
+  // Carica i dati JSON dall'API e avvia l'applicazione
+  loadExternalJsonAndInitialize(apiUrl);
 });
-
-// Dichiarazione della variabile globale
-let prezzoIniziale = 0;
 
 // Oggetto per memorizzare le variabili prezzoIniziale associate agli ID del menu
 const prezzoInizialeMap = {};
+// Dichiarazione della variabile globale prezzoIniziale
+let prezzoIniziale = 0;
+// Dichiarare le variabili globali per salvare le informazioni desiderate
+let globalPrice;
+let globalQuantity;
+let globalImage;
+let globalName;
+let globalID;
+let globalNote;
+// Variabile per salvare la somma di tutti i valori in globalPrice
+let totalPriceSum = 0;
+// Variabile per salvare i totale di tutti i valori in globalPrice
+let grandTotal = 0;
+// Dichiarazione di una variabile per tenere traccia del numero d'ordine
+let numeroOrdineIncrementale = 1;
+// Dichiarazione dell'array al di fuori della funzione
+let itemsArray = [];
+// Variabile globale per la somma totale
+let totalSum = [];
 
-// Funzione per caricare il JSON esterno e inizializzare l'applicazione
-async function loadExternalJsonAndInitialize(jsonUrl) {
+// Modifica la funzione loadExternalJsonAndInitialize per utilizzare la chiamata API
+async function loadExternalJsonAndInitialize(apiUrl) {
   try {
-    const response = await fetch(jsonUrl);
-    const json = await response.json();
+    const response = await fetch(apiUrl); // Esegui la chiamata API
+    const json = await response.json(); // Estrai i dati JSON dalla risposta
 
     // Inizializza l'applicazione con il JSON caricato
     initializeApp(json);
@@ -28,7 +44,7 @@ async function loadExternalJsonAndInitialize(jsonUrl) {
     );
     primaCategoriaCheckbox.click();
   } catch (error) {
-    console.error("Errore nel caricamento del JSON esterno:", error);
+    console.error("Errore nel caricamento dei dati dall'API:", error);
   }
 }
 
@@ -70,18 +86,11 @@ function initializeApp(json) {
     bevande: json["bevande"],
   };
 
-  // Seleziona il container del menu
-  const containerMenu = document.getElementById("container-menu");
-
-  // Dichiarare le variabili globali per salvare le informazioni desiderate
-  let globalPrice;
-  let globalQuantity;
-  let globalImage;
-  let globalName;
-  let globalID;
-
-  // Dichiarare la variabile globale per la lista dei totali
-  let totalPriceList = [];
+  // Aggiungi l'evento di click all'elemento con ID "check-out"
+  const checkoutButton = document.getElementById("check-out");
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", saveValuesOnCheckout);
+  }
 
   // Funzione per generare HTML dinamico basato sulle variabili globali
   function generateDynamicHTML() {
@@ -93,12 +102,13 @@ function initializeApp(json) {
         quantity: globalQuantity,
         price: globalPrice,
         ID: "riepilogo_" + globalID,
+        note: globalNote,
       },
       // Puoi aggiungere altri oggetti all'array se necessario
     ];
 
-    // Variabile per salvare la somma di tutti i valori in globalPrice
-    let totalPriceSum = 0;
+    // Dichiarare la variabile locale per la lista dei totali
+    let totalPriceList = [];
 
     // Selezionare il container in cui si desidera aggiungere l'HTML (sostituire 'container-id' con il tuo effettivo ID del container)
     const container = document.getElementById("container-riepilogo");
@@ -113,14 +123,22 @@ function initializeApp(json) {
       // Impostare l'ID univoco
       objectDiv.id = objectDetails.ID;
       objectDiv.className = "flex items-center mb-4";
+
+      // Verifica se objectDetails.note è maggiore di 0 prima di aggiungere l'elemento <i>
+      const noteHtml =
+        objectDetails.note && objectDetails.note.trim().length > 0
+          ? `<i class="text-sm text-default-600 font-bold text-primary">- ${objectDetails.note}</i>`
+          : "";
+
       objectDiv.innerHTML = `
-      <!-- <img src="${objectDetails.img}" class="h-20 w-20 me-2"> -->
-      <div>
-        <h4 class="text-sm text-default-600 mb-2">${objectDetails.name}</h4>
-        <h4 class="text-sm text-default-400">${objectDetails.quantity} x <span class="text-primary font-semibold">€${objectDetails.price}</span></h4>
-        <button>X</button>
+        <!-- <img src="${objectDetails.img}" class="h-20 w-20 me-2"> -->
+        <div>
+          <h4 class="text-sm text-default-600 mb-2 font-bold">${objectDetails.name}</h4>
+          ${noteHtml}
+          <h4 class="text-sm text-default-400 font-bold">${objectDetails.quantity} x <span class="text-primary font-semibold">€${objectDetails.price}</span>
+          <button style="float: right;" class="font-bold text-default-950">X</button></h4>
         </div>
-    `;
+      `;
 
       // Aggiungere il listener di evento al pulsante "X"
       const deleteButton = objectDiv.querySelector("button");
@@ -133,14 +151,17 @@ function initializeApp(json) {
       container.appendChild(objectDiv);
     });
 
-    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
-    console.log("Somma totale dei prezzi di questa chiamata:", totalPriceSum);
+    // Aggiungere il valore corrente alla somma totale
+    grandTotal += totalPriceSum;
 
     // Aggiungere il valore corrente alla lista dei totali
     totalPriceList.push(totalPriceSum);
 
+    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
+    console.log("Somma totale dei prezzi di questa chiamata:", totalPriceSum);
+
     // Calcolare la somma totale di tutti i valori nella lista
-    const grandTotal = totalPriceList.reduce(
+    grandTotal = totalPriceList.reduce(
       (acc, currentTotal) => acc + currentTotal,
       0
     );
@@ -151,7 +172,7 @@ function initializeApp(json) {
     // Aggiornare il contenuto dell'elemento con la somma totale
     totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
 
-    console.log("Totale:", grandTotal);
+    console.log("Totale riepilog:", grandTotal);
 
     // Aggiungere la funzione di eliminazione
     function deleteObject(index) {
@@ -171,18 +192,18 @@ function initializeApp(json) {
         // Rimuovere il div dal DOM
         container.removeChild(divToRemove);
 
-        // Aggiornare la somma totale sottraendo il prezzo dell'oggetto eliminato
-        const grandTotal =
-          totalPriceList.reduce((acc, currentTotal) => acc + currentTotal, 0) -
-          removedObjectPrice;
-
-        // Selezionare l'elemento <p> con l'ID "Totale"
-        const totaleElement = document.getElementById("Totale");
+        // Sottrarre il prezzo dell'oggetto eliminato dalla somma totale
+        grandTotal -= removedObjectPrice;
 
         // Aggiornare il contenuto dell'elemento con la nuova somma totale
         totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
 
         console.log("Totale aggiornato dopo l'eliminazione:", grandTotal);
+
+        // Aggiornare totalPriceSum sottraendo il prezzo dell'oggetto eliminato
+        totalPriceSum -= removedObjectPrice;
+
+        console.log("Totale riepilogo aggiornato:", totalPriceSum);
       } else {
         // Log se l'elemento non è stato trovato o non è un figlio diretto del contenitore
         console.error(
@@ -191,9 +212,60 @@ function initializeApp(json) {
       }
     }
   }
+  // Funzione per salvare i valori
+  function saveValuesOnCheckout() {
+    if (grandTotal !== 0) {
+      const currentItem = {
+        gust: GuestTypeSelectedInput,
+        order: numeroOrdineIncrementale,
+        total: grandTotal,
+      };
+      numeroOrdineIncrementale++;
+      itemsArray.push(currentItem);
+      // Richiama la funzione per salvare i dati nel localStorage
+      saveToLocalStorage();
+      // Richiama la funzione per calcolare e salvare la somma totale
+      calculateAndSaveTotalSum();
+
+      console.log("Valori salvati con successo:", currentItem);
+      toastr.success("Prodotto aggiunto con successo al carrello!", "Successo");
+    } else {
+      console.error("Errore: Almeno uno dei valori da salvare è undefined.");
+      toastr.error("Aggiungi almeno un prodotto a carrello!", "Errore");
+    }
+  }
+  // Funzione per caricare i dati dal localStorage
+  function loadFromLocalStorage() {
+    // Carica l'array
+    const storedItemsArray = localStorage.getItem("itemsArray");
+    itemsArray = storedItemsArray ? JSON.parse(storedItemsArray) : [];
+
+    // Carica la somma totale
+    const storedTotalSum = localStorage.getItem("totalSum");
+    totalSum = storedTotalSum ? parseInt(storedTotalSum, 10) : 0;
+  }
+
+  // Funzione per salvare i dati nel localStorage
+  function saveToLocalStorage() {
+    localStorage.setItem("itemsArray", JSON.stringify(itemsArray));
+    localStorage.setItem("totalSum", totalSum.toString());
+  }
+
+  // Funzione per calcolare e salvare la somma totale
+  function calculateAndSaveTotalSum() {
+    totalSum = itemsArray.reduce(
+      (sum, currentItem) => sum + currentItem.total,
+      0
+    );
+    saveToLocalStorage();
+    console.log("Somma totale calcolata e salvata:", totalSum);
+  }
 
   // Funzione per aggiornare il menu in base alla categoria selezionata
   function updateMenu(categoryId) {
+    // Seleziona il container del menu
+    const containerMenu = document.getElementById("container-menu");
+
     // Seleziona l'array di menu corrispondente alla categoria
     const arrayMenu = categorieMenuMap[categoryId];
 
@@ -230,38 +302,44 @@ function initializeApp(json) {
         }
 
         menuElement.innerHTML = `
-          
-      <div class="relative rounded-lg overflow-hidden divide-y divide-default-200 group">
-        <div class="mb-4 mx-auto">
-          <img class="w-full h-full group-hover:scale-105 transition-all" src="${oggetto.img}" />
-        </div>
-
-        <div class="pt-2">
-          <div style="    flex-flow: column;" class="flex justify-between mb-4">
-            <a class="text-default-800 text-xl font-semibold line-clamp-1 after:absolute after:inset-0" href="product-detail.html">${oggetto.name}</a>
-            <i class="text-m text-default-500">${oggetto.desc}</i>
+            
+        <div class="relative rounded-lg overflow-hidden divide-y divide-default-200 group">
+          <div class="mb-4 mx-auto">
+            <img class="w-full h-full group-hover:scale-105 transition-all" src="${oggetto.img}" />
           </div>
-
-          <div class="flex items-end justify-between mb-4">
-            <h4 class="font-semibold text-xl text-default-900">€ ${oggetto.price}</h4>
-            <div class="relative z-10 inline-flex justify-between border border-default-200 p-1 rounded-full">
-              <button class="minus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">–</button>
-              <input class="w-8 border-0 text-sm text-center text-default-800 focus:ring-0 p-0 bg-transparent" max="100" min="0" readonly="" type="text" value="1" />
-              <button class="plus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">+</button>
+  
+          <div class="pt-2">
+            <div id="obj-desc-container" style="flex-flow: column;" class="flex justify-between mb-4">
+              <span class="text-default-800 text-xl font-semibold line-clamp-1 after:absolute after:inset-0">${oggetto.name}</span>
+              <i class="text-m text-default-500">${oggetto.desc}</i>
+              <div class="border border-default-200 inline-flex justify-between mt-2 p-1 relative rounded-full z-10 truncate overflow-auto">
+              <input id="input_${menuId}" type="text" placeholder="Inserisci modifiche" class="border-none h-3 w-full truncate overflow-auto" />
+              </div>
             </div>
-          </div>
+  
+            <div class="flex items-end justify-between mb-4">
+              <h4 class="font-semibold text-xl text-default-900">€ ${oggetto.price}</h4>
+              <div class="relative z-10 inline-flex justify-between border border-default-200 p-1 rounded-full">
+                <button class="minus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">–</button>
+                <input id="quantity_${menuId}" class="w-8 border-0 text-sm text-center text-default-800 focus:ring-0 p-0 bg-transparent" max="100" min="0" readonly="" type="text" value="1" />
+                <button class="plus flex-shrink-0 bg-default-200 text-default-800 rounded-full h-6 w-6 text-sm inline-flex items-center justify-center" type="button">+</button>
+              </div>
 
-          <a id="add-cart" class="relative z-10 w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" href="cart.html">Aggiungi al carrello</a>
+            </div>
+  
+            <a id="add-cart" class="relative z-10 w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" href="cart.html">Aggiungi al carrello</a>
+          </div>
         </div>
-      </div>
-    
-          `;
+      
+            `;
 
         // Aggiungi eventi di click ai pulsanti e all'elemento "add-cart"
         const minusButton = menuElement.querySelector(".minus");
         const plusButton = menuElement.querySelector(".plus");
         const addCartButton = menuElement.querySelector("#add-cart");
-        const quantityInput = menuElement.querySelector("input");
+        const quantityInput = menuElement.querySelector(
+          "input#quantity_" + menuId
+        );
 
         minusButton.addEventListener("click", function () {
           // Verifica se la quantità è maggiore di 0 prima di ridurla
@@ -315,6 +393,10 @@ function initializeApp(json) {
             // Previeni il comportamento di default del link
             event.preventDefault();
 
+            // Seleziona l'elemento input per l'oggetto corrente
+            const inputId = `input_${menuId}`;
+            const noteInput = document.getElementById(inputId);
+
             // Verifica se la quantità è maggiore di 0 prima di procedere con l'aggiunta al carrello
             if (parseInt(quantityInput.value, 10) > 0) {
               // Salva le informazioni desiderate come variabili globali
@@ -323,6 +405,13 @@ function initializeApp(json) {
               globalImage = oggetto.img;
               globalName = oggetto.name;
               globalID = menuId;
+
+              // Ottieni il valore dall'input solo se la lunghezza è maggiore di 0
+              if (noteInput && noteInput.value.trim().length > 0) {
+                globalNote = noteInput.value.trim();
+              } else {
+                globalNote = ""; // Imposta globalNote a una stringa vuota se la lunghezza è 0
+              }
 
               // Chiama la funzione per salvare le variabili globali
               saveGlobalVariables();
@@ -345,6 +434,30 @@ function initializeApp(json) {
       }
     }
 
+    function editInput(menuId) {
+      // Costruisci l'id dell'input
+      const inputId = `input_${menuId}`;
+
+      // Seleziona l'elemento input
+      const inputElement = document.getElementById(inputId);
+
+      // Verifica se l'elemento input esiste
+      if (inputElement) {
+        // Aggiungi un listener per il click sull'input
+        inputElement.addEventListener("click", function () {
+          console.log(`Input con id ${inputId} cliccato.`);
+
+          // Salva il valore dell'input nella variabile globale
+          globalNote = inputElement.value;
+        });
+
+        // Imposta il focus sull'input per attivare la modalità di modifica
+        inputElement.focus();
+      } else {
+        console.error(`Elemento input con id ${inputId} non trovato.`);
+      }
+    }
+
     // Funzione per salvare le variabili globali
     function saveGlobalVariables() {
       // Puoi fare quello che vuoi con le variabili globali qui
@@ -354,6 +467,7 @@ function initializeApp(json) {
       console.log("Global Image:", globalImage);
       console.log("Global Name:", globalName);
       console.log("Global ID:", globalID);
+      console.log("Global Note:", globalNote);
     }
 
     // Funzione per calcolare il prezzo aggiornato in base all'incremento o decremento
@@ -416,5 +530,16 @@ function initializeApp(json) {
 
     // Append the category div to the category list container
     categoryListContainer.appendChild(categoryDiv);
+  });
+
+  // Aggiungi l'evento di caricamento della pagina per caricare i dati dal localStorage
+  window.addEventListener("load", loadFromLocalStorage);
+
+  // Aggiungi l'evento di scaricamento della pagina per salvare i dati nel localStorage
+  window.addEventListener("beforeunload", saveToLocalStorage);
+
+  // Aggiungi l'evento di scaricamento della pagina per salvare i dati nel localStorage
+  window.addEventListener("unload", function () {
+    saveToLocalStorage();
   });
 }
