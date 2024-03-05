@@ -7,28 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
   loadExternalJsonAndInitialize(apiUrl);
 });
 
-// Oggetto per memorizzare le variabili prezzoIniziale associate agli ID del menu
-const prezzoInizialeMap = {};
-// Dichiarazione della variabile globale prezzoIniziale
-let prezzoIniziale = 0;
-// Dichiarare le variabili globali per salvare le informazioni desiderate
-let globalPrice;
-let globalQuantity;
-let globalImage;
-let globalName;
-let globalID;
-let globalNote;
-// Variabile per salvare la somma di tutti i valori in globalPrice
-let totalPriceSum = 0;
-// Variabile per salvare i totale di tutti i valori in globalPrice
-let grandTotal = 0;
-// Dichiarazione di una variabile per tenere traccia del numero d'ordine
-let numeroOrdineIncrementale = 1;
-// Dichiarazione dell'array al di fuori della funzione
-let itemsArray = [];
-// Variabile globale per la somma totale
-let totalSum = [];
-
 // Modifica la funzione loadExternalJsonAndInitialize per utilizzare la chiamata API
 async function loadExternalJsonAndInitialize(apiUrl) {
   try {
@@ -48,34 +26,54 @@ async function loadExternalJsonAndInitialize(apiUrl) {
   }
 }
 
+// Oggetto per memorizzare le variabili prezzoIniziale associate agli ID del menu
+const prezzoInizialeMap = {};
+// Dichiarazione della variabile globale prezzoIniziale
+let prezzoIniziale = 0;
+// Dichiarare le variabili globali per salvare le informazioni desiderate
+let globalPrice;
+let globalQuantity;
+let globalImage;
+let globalName;
+let globalID;
+let globalNote;
+
+// Variabile per salvare la somma di tutti i valori in globalPrice
+let totalPriceSum = 0;
+// Variabile per salvare i totale di tutti i valori in globalPrice
+let grandTotal = 0;
+// Dichiarazione di una variabile per tenere traccia del numero d'ordine
+let numeroOrdineIncrementale = 1;
+// Dichiarazione dell'array al di fuori della funzione
+let OrderItemList = [];
+// Variabile globale per la somma INCASSO totale
+let OrderTotalSum = 0;
+// Dichiarare la variabile globale per l'array di ordini
+let OredNub = [];
+// Dichiarare la variabile globale per i dati dell'ordine
+let orderData = [];
+// Contatore globale per OrderNub
+let orderNubCounter = 1;
+
+function clearContainers() {
+  const containerRiepilogo = document.getElementById("container-riepilogo");
+  const containerTotale = document.getElementById("Totale");
+
+  if (containerRiepilogo && containerTotale) {
+    // Rimuovere tutto il contenuto HTML dal div "container-riepilogo"
+    containerRiepilogo.innerHTML = "";
+
+    // Rimuovere tutto il contenuto HTML dal div "Totale"
+    containerTotale.innerHTML = "";
+
+    console.log("Contenuto dei container eliminato con successo.");
+  } else {
+    console.error("Errore: Impossibile trovare uno o entrambi i container.");
+  }
+}
+
 // Funzione per inizializzare l'applicazione con il JSON (Lista prodotti) fornito
 function initializeApp(json) {
-  // Funzione per gestire il click sulla categoria
-  function categoriaClick(event) {
-    // Deseleziona la categoria precedentemente selezionata
-    const categorieSelezionate = document.querySelectorAll(
-      '#category-list input[type="checkbox"]:checked'
-    );
-    categorieSelezionate.forEach((categoria) => {
-      categoria.checked = false;
-    });
-
-    // Seleziona la categoria cliccata
-    const checkbox = event.currentTarget.querySelector(
-      'input[type="checkbox"]'
-    );
-    checkbox.checked = true;
-
-    // Ottieni l'ID della categoria cliccata
-    const categoryId = checkbox.id;
-
-    // Esegui le azioni desiderate con l'ID della categoria
-    console.log(`Hai cliccato sulla categoria con ID: ${categoryId}`);
-
-    // Aggiorna il menu in base alla categoria selezionata
-    updateMenu(categoryId);
-  }
-
   // Mappa delle categorie ai rispettivi array di menu
   const categorieMenuMap = {
     cucina: json["cucina"],
@@ -85,12 +83,6 @@ function initializeApp(json) {
     pizza: json["pizza"],
     bevande: json["bevande"],
   };
-
-  // Aggiungi l'evento di click all'elemento con ID "check-out"
-  const checkoutButton = document.getElementById("check-out");
-  if (checkoutButton) {
-    checkoutButton.addEventListener("click", saveValuesOnCheckout);
-  }
 
   // Funzione per generare HTML dinamico basato sulle variabili globali
   function generateDynamicHTML() {
@@ -155,6 +147,34 @@ function initializeApp(json) {
     grandTotal += totalPriceSum;
 
     // Aggiungere il valore corrente alla lista dei totali
+    OredNub.push({
+      name: globalName,
+      note: globalNote,
+      quantity: globalQuantity,
+      price: globalPrice,
+    });
+
+    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
+    console.log("Ordine Array:", OredNub);
+
+    // Creare un oggetto di dettagli dell'ordine basato sulle variabili globali
+    const orderDetailsObject = {
+      name: globalName,
+      quantity: globalQuantity,
+      price: globalPrice,
+      note: globalNote,
+    };
+
+    // Aggiungere i dati correnti alla variabile globale orderData
+    orderData.push(orderDetailsObject);
+
+    // Convertire l'oggetto in una stringa JSON e assegnarla a orderDataJson
+    const orderDataJson = JSON.stringify(orderData);
+
+    // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
+    console.log("Ordine JSON:", orderDataJson);
+
+    // Aggiungere il valore corrente alla lista dei totali
     totalPriceList.push(totalPriceSum);
 
     // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
@@ -172,7 +192,7 @@ function initializeApp(json) {
     // Aggiornare il contenuto dell'elemento con la somma totale
     totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
 
-    console.log("Totale riepilog:", grandTotal);
+    console.log("Totale riepilogo:", grandTotal);
 
     // Aggiungere la funzione di eliminazione
     function deleteObject(index) {
@@ -195,6 +215,9 @@ function initializeApp(json) {
         // Sottrarre il prezzo dell'oggetto eliminato dalla somma totale
         grandTotal -= removedObjectPrice;
 
+        // Assicurarsi che grandTotal non diventi mai negativo
+        grandTotal = Math.max(0, grandTotal);
+
         // Aggiornare il contenuto dell'elemento con la nuova somma totale
         totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
 
@@ -202,6 +225,9 @@ function initializeApp(json) {
 
         // Aggiornare totalPriceSum sottraendo il prezzo dell'oggetto eliminato
         totalPriceSum -= removedObjectPrice;
+
+        // Assicurarsi che totalPriceSum non diventi mai negativo
+        totalPriceSum = Math.max(0, totalPriceSum);
 
         console.log("Totale riepilogo aggiornato:", totalPriceSum);
       } else {
@@ -212,6 +238,38 @@ function initializeApp(json) {
       }
     }
   }
+
+  // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
+  loadFromLocalStorage();
+
+  // Aggiungi un listener per l'evento beforeunload per assicurarti che i dati vengano salvati prima di lasciare la pagina
+  window.addEventListener("beforeunload", () => {
+    saveToLocalStorage();
+  });
+
+  // Aggiungi l'evento di click all'elemento con ID "check-out"
+  const checkoutButton = document.getElementById("check-out");
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", function () {
+      // Chiamare la funzione saveValuesOnCheckout
+      saveValuesOnCheckout();
+      // Chiamare la funzione per eseguire l'eliminazione
+      clearContainers();
+
+      // Ottenere il JSON risultante dalla variabile globale orderData
+      const orderDataJson = JSON.stringify(orderData);
+
+      // Chiamare la funzione transformAndSaveOrderData con il JSON risultante
+      const transformedOrderData = transformAndSaveOrderData(orderDataJson);
+
+      // Svuotare le variabile
+      orderData = [];
+      OredNub = [];
+      totalPriceSum = 0;
+      grandTotal = 0;
+    });
+  }
+
   // Funzione per salvare i valori
   function saveValuesOnCheckout() {
     if (grandTotal !== 0) {
@@ -220,12 +278,14 @@ function initializeApp(json) {
         order: numeroOrdineIncrementale,
         total: grandTotal,
       };
+
       numeroOrdineIncrementale++;
-      itemsArray.push(currentItem);
+      OrderItemList.push(currentItem);
+
       // Richiama la funzione per salvare i dati nel localStorage
       saveToLocalStorage();
       // Richiama la funzione per calcolare e salvare la somma totale
-      calculateAndSaveTotalSum();
+      calculateAndSaveOrderTotalSum();
 
       console.log("Valori salvati con successo:", currentItem);
       toastr.success("Prodotto aggiunto con successo al carrello!", "Successo");
@@ -234,31 +294,83 @@ function initializeApp(json) {
       toastr.error("Aggiungi almeno un prodotto a carrello!", "Errore");
     }
   }
+
+  function transformAndSaveOrderData(orderData) {
+    // Convertire la stringa JSON in un array di oggetti
+    const orderArray = JSON.parse(orderData);
+
+    // Creare un oggetto contenitore con una chiave incrementale "OrderNub"
+    const transformedData = {
+      [`OrderNub${orderNubCounter}`]: [],
+    };
+
+    // Riempire l'array dell'oggetto contenitore
+    orderArray.forEach((orderDetails) => {
+      transformedData[`OrderNub${orderNubCounter}`].push(orderDetails);
+    });
+
+    // Incrementare il contatore globale per la prossima chiamata
+    orderNubCounter++;
+
+    // Convertire l'oggetto in una stringa JSON
+    const transformedDataJson = JSON.stringify(transformedData);
+
+    // Ora puoi utilizzare transformedDataJson per ottenere la rappresentazione JSON dei dati trasformati
+    console.log("Dati trasformati JSON:", transformedDataJson);
+
+    // Restituire la stringa JSON risultante
+    return transformedDataJson;
+  }
+
   // Funzione per caricare i dati dal localStorage
   function loadFromLocalStorage() {
     // Carica l'array
-    const storedItemsArray = localStorage.getItem("itemsArray");
-    itemsArray = storedItemsArray ? JSON.parse(storedItemsArray) : [];
+    OrderItemList = JSON.parse(localStorage.getItem("OrderItemList")) || [];
 
     // Carica la somma totale
-    const storedTotalSum = localStorage.getItem("totalSum");
-    totalSum = storedTotalSum ? parseInt(storedTotalSum, 10) : 0;
+    OrderTotalSum = parseInt(localStorage.getItem("OrderTotalSum"), 10) || 0;
   }
 
   // Funzione per salvare i dati nel localStorage
   function saveToLocalStorage() {
-    localStorage.setItem("itemsArray", JSON.stringify(itemsArray));
-    localStorage.setItem("totalSum", totalSum.toString());
+    localStorage.setItem("OrderItemList", JSON.stringify(OrderItemList));
+    localStorage.setItem("OrderTotalSum", OrderTotalSum.toString());
   }
 
   // Funzione per calcolare e salvare la somma totale
-  function calculateAndSaveTotalSum() {
-    totalSum = itemsArray.reduce(
+  function calculateAndSaveOrderTotalSum() {
+    OrderTotalSum = OrderItemList.reduce(
       (sum, currentItem) => sum + currentItem.total,
       0
     );
     saveToLocalStorage();
-    console.log("Somma totale calcolata e salvata:", totalSum);
+    console.log("Somma totale INCASSO calcolata e salvata:", OrderTotalSum);
+  }
+
+  // Funzione per gestire il click sulla categoria
+  function categoriaClick(event) {
+    // Deseleziona la categoria precedentemente selezionata
+    const categorieSelezionate = document.querySelectorAll(
+      '#category-list input[type="checkbox"]:checked'
+    );
+    categorieSelezionate.forEach((categoria) => {
+      categoria.checked = false;
+    });
+
+    // Seleziona la categoria cliccata
+    const checkbox = event.currentTarget.querySelector(
+      'input[type="checkbox"]'
+    );
+    checkbox.checked = true;
+
+    // Ottieni l'ID della categoria cliccata
+    const categoryId = checkbox.id;
+
+    // Esegui le azioni desiderate con l'ID della categoria
+    console.log(`Hai cliccato sulla categoria con ID: ${categoryId}`);
+
+    // Aggiorna il menu in base alla categoria selezionata
+    updateMenu(categoryId);
   }
 
   // Funzione per aggiornare il menu in base alla categoria selezionata
@@ -530,16 +642,5 @@ function initializeApp(json) {
 
     // Append the category div to the category list container
     categoryListContainer.appendChild(categoryDiv);
-  });
-
-  // Aggiungi l'evento di caricamento della pagina per caricare i dati dal localStorage
-  window.addEventListener("load", loadFromLocalStorage);
-
-  // Aggiungi l'evento di scaricamento della pagina per salvare i dati nel localStorage
-  window.addEventListener("beforeunload", saveToLocalStorage);
-
-  // Aggiungi l'evento di scaricamento della pagina per salvare i dati nel localStorage
-  window.addEventListener("unload", function () {
-    saveToLocalStorage();
   });
 }
