@@ -48,9 +48,11 @@ let numeroOrdineIncrementale = 1;
 let OrderItemList = [];
 // Variabile globale per la somma INCASSO totale
 let OrderTotalSum = 0;
+let OrderdTotalClient = 0;
+let OrderdTotalGuest = 0;
 // Dichiarare la variabile globale per l'array di ordini
-let OredNub = [];
-// Dichiarare la variabile globale per i dati dell'ordine
+//let OredNub = [];
+// Dichiarare la variabile globale per i dati dell'ordine JSON
 let orderData = [];
 // Contatore globale per OrderNub
 let orderNubCounter = 1;
@@ -143,58 +145,7 @@ function initializeApp(json) {
       container.appendChild(objectDiv);
     });
 
-    // Aggiungere il valore corrente alla somma totale
-    grandTotal += totalPriceSum;
-
-    // Aggiungere il valore corrente alla lista dei totali
-    OredNub.push({
-      name: globalName,
-      note: globalNote,
-      quantity: globalQuantity,
-      price: globalPrice,
-    });
-
-    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
-    console.log("Ordine Array:", OredNub);
-
-    // Creare un oggetto di dettagli dell'ordine basato sulle variabili globali
-    const orderDetailsObject = {
-      name: globalName,
-      quantity: globalQuantity,
-      price: globalPrice,
-      note: globalNote,
-    };
-
-    // Aggiungere i dati correnti alla variabile globale orderData
-    orderData.push(orderDetailsObject);
-
-    // Convertire l'oggetto in una stringa JSON e assegnarla a orderDataJson
-    const orderDataJson = JSON.stringify(orderData);
-
-    // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
-    console.log("Ordine JSON:", orderDataJson);
-
-    // Aggiungere il valore corrente alla lista dei totali
-    totalPriceList.push(totalPriceSum);
-
-    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
-    console.log("Somma totale dei prezzi di questa chiamata:", totalPriceSum);
-
-    // Calcolare la somma totale di tutti i valori nella lista
-    grandTotal = totalPriceList.reduce(
-      (acc, currentTotal) => acc + currentTotal,
-      0
-    );
-
-    // Selezionare l'elemento <p> con l'ID "Totale"
-    const totaleElement = document.getElementById("Totale");
-
-    // Aggiornare il contenuto dell'elemento con la somma totale
-    totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
-
-    console.log("Totale riepilogo:", grandTotal);
-
-    // Aggiungere la funzione di eliminazione
+    // Funzione di eliminazione voce
     function deleteObject(index) {
       // Selezionare il div padre da rimuovere
       const container = document.getElementById("container-riepilogo");
@@ -237,38 +188,109 @@ function initializeApp(json) {
         );
       }
     }
+
+    // Calcolare la somma totale di tutti i valori nella lista
+    grandTotal = totalPriceList.reduce(
+      (acc, currentTotal) => acc + currentTotal,
+      0
+    );
+
+    // Aggiungere il valore corrente alla somma totale
+    grandTotal += totalPriceSum;
+
+    // Aggiungere il valore corrente alla lista dei totali
+    totalPriceList.push(totalPriceSum);
+
+    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
+    console.log("Totale riepilogo:", grandTotal);
+
+    // Selezionare l'elemento <p> con l'ID "Totale"
+    const totaleElement = document.getElementById("Totale");
+
+    // Aggiornare il contenuto dell'elemento con la somma totale
+    totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
+
+    if (totalPriceList > 0) {
+      // Ottieni il riferimento al bottone "check-out"
+      var checkoutButton = document.getElementById("check-out");
+
+      // Toggle della classe opacity-50 sul div del bottone "check-out"
+      checkoutButton.classList.remove("opacity-50");
+    }
+
+    // // Aggiungere il valore corrente alla lista dei totali
+    // OredNub.push({
+    //   name: globalName,
+    //   note: globalNote,
+    //   quantity: globalQuantity,
+    //   price: globalPrice,
+    // });
+
+    // Ora puoi utilizzare la variabile totalPriceSum per ottenere la somma totale dei prezzi
+    //console.log("Ordine Array:", OredNub);
+
+    // Creare un oggetto di dettagli dell'ordine basato sulle variabili globali
+    const orderDetailsObject = {
+      name: globalName,
+      quantity: globalQuantity,
+      price: globalPrice,
+      note: globalNote,
+      guest: GuestTypeSelectedInput,
+    };
+
+    // Aggiungere i dati correnti alla variabile globale orderData
+    orderData.push(orderDetailsObject);
+
+    // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
+    console.log("Ordine:", orderDetailsObject);
+
+    // Convertire l'oggetto in una stringa JSON e assegnarla a orderDataJson
+    const orderDataJson = JSON.stringify(orderData);
+
+    // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
+    console.log("Ordine JSON:", orderDataJson);
+    // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
+    console.log("Ordine:", orderData);
   }
-
-  // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
-  loadFromLocalStorage();
-
-  // Aggiungi un listener per l'evento beforeunload per assicurarti che i dati vengano salvati prima di lasciare la pagina
-  window.addEventListener("beforeunload", () => {
-    saveToLocalStorage();
-  });
 
   // Aggiungi l'evento di click all'elemento con ID "check-out"
   const checkoutButton = document.getElementById("check-out");
   if (checkoutButton) {
     checkoutButton.addEventListener("click", function () {
-      // Chiamare la funzione saveValuesOnCheckout
-      saveValuesOnCheckout();
-      // Chiamare la funzione per eseguire l'eliminazione
-      clearContainers();
+      if (grandTotal !== 0) {
+        // Chiamare la funzione saveValuesOnCheckout
+        saveValuesOnCheckout();
+        // Chiamare la funzione per eseguire l'eliminazione
+        clearContainers();
+        // Toggle della classe opacity-50 sul div del bottone "check-out"
+        checkoutButton.classList.add("opacity-50");
 
-      // Ottenere il JSON risultante dalla variabile globale orderData
-      const orderDataJson = JSON.stringify(orderData);
+        // Ottenere il JSON risultante dalla variabile globale orderData
+        const orderDataJson = JSON.stringify(orderData);
 
-      // Chiamare la funzione transformAndSaveOrderData con il JSON risultante
-      const transformedOrderData = transformAndSaveOrderData(orderDataJson);
+        // Chiamare la funzione transformAndSaveOrderData con il JSON risultante
+        const transformedOrderData = transformAndSaveOrderData(orderDataJson);
 
-      // Svuotare le variabile
-      orderData = [];
-      OredNub = [];
-      totalPriceSum = 0;
-      grandTotal = 0;
+        // Chiamare la funzione showPopupOrderData con i dati trasformati
+        showPopupOrderData(transformedOrderData, grandTotal);
+
+        // Svuotare le variabile
+        orderData = [];
+        //OredNub = [];
+        totalPriceSum = 0;
+        grandTotal = 0;
+      } else {
+        // Alert o messaggio che informa l'utente che non può effettuare il check-out
+        toastr.error("Il carrello è vuoto!", "Errore");
+      }
     });
   }
+
+  // Aggiungi un listener per l'evento beforeunload per assicurarti che i dati vengano salvati prima di lasciare la pagina
+  window.addEventListener("beforeunload", () => {
+    saveToLocalStorage();
+    salvaNumeroOrdineLocalStorage();
+  });
 
   // Funzione per salvare i valori
   function saveValuesOnCheckout() {
@@ -286,27 +308,54 @@ function initializeApp(json) {
       saveToLocalStorage();
       // Richiama la funzione per calcolare e salvare la somma totale
       calculateAndSaveOrderTotalSum();
+      // Richiama la funzione per salvare il totale dell'ordine nel localStorage
+      saveOrderTotalToLocalStorage(grandTotal);
 
       console.log("Valori salvati con successo:", currentItem);
-      toastr.success("Prodotto aggiunto con successo al carrello!", "Successo");
+      console.log("Totale ordini:", numeroOrdineIncrementale);
     } else {
       console.error("Errore: Almeno uno dei valori da salvare è undefined.");
       toastr.error("Aggiungi almeno un prodotto a carrello!", "Errore");
     }
   }
 
+  // Funzione per salvare il totale dell'ordine nel local storage in base al tipo di cliente
+  function saveOrderTotalToLocalStorage(grandTotal) {
+    // Controlla il valore di GuestTypeSelectedInput
+    if (GuestTypeSelectedInput === "Client") {
+      // Somma il valore precedente con il nuovo grandTotal
+      OrderdTotalClient += grandTotal;
+      // Salva OrderdTotalClient nel local storage
+      localStorage.setItem("OrderdTotalClient", OrderdTotalClient);
+      console.log(
+        'Totale dell\'ordine salvato per il cliente "Client":',
+        OrderdTotalClient
+      );
+    } else if (GuestTypeSelectedInput === "Guest") {
+      // Somma il valore precedente con il nuovo grandTotal
+      OrderdTotalGuest += grandTotal;
+      // Salva OrderdTotalGuest nel local storage
+      localStorage.setItem("OrderdTotalGuest", OrderdTotalGuest);
+      console.log(
+        'Totale dell\'ordine salvato per il cliente "Guest":',
+        OrderdTotalGuest
+      );
+    }
+  }
+
+  // Funzione per agiungere nemro ordine a orderData
   function transformAndSaveOrderData(orderData) {
     // Convertire la stringa JSON in un array di oggetti
     const orderArray = JSON.parse(orderData);
 
     // Creare un oggetto contenitore con una chiave incrementale "OrderNub"
     const transformedData = {
-      [`OrderNub${orderNubCounter}`]: [],
+      [`${orderNubCounter}`]: [],
     };
 
     // Riempire l'array dell'oggetto contenitore
     orderArray.forEach((orderDetails) => {
-      transformedData[`OrderNub${orderNubCounter}`].push(orderDetails);
+      transformedData[`${orderNubCounter}`].push(orderDetails);
     });
 
     // Incrementare il contatore globale per la prossima chiamata
@@ -322,6 +371,53 @@ function initializeApp(json) {
     return transformedDataJson;
   }
 
+  // Funzione per creare e mostrare il pop-up con i dati trasformati
+  function showPopupOrderData(transformedDataJson, grandTotal) {
+    // JSON da parsare
+    const jsonData = transformedDataJson;
+    // Converti la stringa JSON in un oggetto JavaScript
+    const orderData = JSON.parse(jsonData);
+    console.log(jsonData);
+
+    // Ottieni la chiave dinamica (potrebbe essere la prima chiave dell'oggetto)
+    const orderKey = Object.keys(orderData)[0];
+
+    // Ottieni l'array di oggetti dalla chiave dinamica
+    const orderItems = orderData[orderKey];
+
+    // Ottieni il contenitore del pop-up
+    const popupContainer = document.getElementById("popup-container");
+
+    const GragrandTotal = grandTotal;
+
+    // Creare HTML dinamico con i dati mappati
+    let htmlContent = `<h4 class="text-base text-default-700 font-bold">Ordine N.${orderKey}</h4>`;
+    const noteHtml = `
+    <div class="flex justify-between m-3">
+      <p class="text-base text-default-700 font-bold">Totale: </p>
+      <p id="Totale" class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
+    </div>
+  `;
+    orderItems.forEach((item) => {
+      htmlContent += `
+      <div>
+          <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm ">Piatto: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800">${item.name}</span></h4>
+          <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm ">Quantità:<span class="px-5 py-3 whitespace-nowrap text-sm text-default-800">${item.quantity}</span></h4>
+          <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm ">Prezzo: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800">${item.price} €</span></h4>
+          <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm ">Note: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800">${item.note}</span></h4>
+      </div>
+      <hr>
+
+    `;
+    });
+    htmlContent += noteHtml;
+    // Assegna l'HTML al contenitore del pop-up
+    popupContainer.innerHTML = `<span class="font-semibold text-primary text-xl" id="close-button" onclick="closePopup()">X</span>${htmlContent}`;
+
+    // Mostra il pop-up
+    popupContainer.style.display = "block";
+  }
+
   // Funzione per caricare i dati dal localStorage
   function loadFromLocalStorage() {
     // Carica l'array
@@ -329,12 +425,27 @@ function initializeApp(json) {
 
     // Carica la somma totale
     OrderTotalSum = parseInt(localStorage.getItem("OrderTotalSum"), 10) || 0;
+
+    // Carica ordini totali
+    numeroOrdineIncrementale =
+      parseInt(localStorage.getItem("TotalOrder"), 10) || 0;
+
+    // Carica OrderdTotalClient
+    OrderdTotalClient =
+      parseInt(localStorage.getItem("OrderdTotalClient"), 10) || 0;
+
+    // Carica OrderdTotalGuest
+    OrderdTotalGuest =
+      parseInt(localStorage.getItem("OrderdTotalGuest"), 10) || 0;
   }
 
   // Funzione per salvare i dati nel localStorage
   function saveToLocalStorage() {
     localStorage.setItem("OrderItemList", JSON.stringify(OrderItemList));
     localStorage.setItem("OrderTotalSum", OrderTotalSum.toString());
+    localStorage.setItem("TotalOrder", numeroOrdineIncrementale.toString());
+    localStorage.setItem("OrderdTotalClient", OrderdTotalClient.toString());
+    localStorage.setItem("OrderdTotalGuest", OrderdTotalGuest.toString());
   }
 
   // Funzione per calcolare e salvare la somma totale
@@ -505,6 +616,12 @@ function initializeApp(json) {
             // Previeni il comportamento di default del link
             event.preventDefault();
 
+            // Ottieni il riferimento al bottone "check-out"
+            var checkoutButton = document.getElementById("check-out");
+
+            // Toggle della classe opacity-50 sul div del bottone "check-out"
+            checkoutButton.classList.add("opacity-50");
+
             // Seleziona l'elemento input per l'oggetto corrente
             const inputId = `input_${menuId}`;
             const noteInput = document.getElementById(inputId);
@@ -530,6 +647,10 @@ function initializeApp(json) {
 
               // Chiama la funzione per generare l'HTML dinamico
               generateDynamicHTML();
+              toastr.success(
+                "Prodotto aggiunto con successo al carrello!",
+                "Successo"
+              );
             } else {
               console.log(
                 "Impossibile aggiungere al riepilogo. La quantità è 0."
@@ -643,4 +764,7 @@ function initializeApp(json) {
     // Append the category div to the category list container
     categoryListContainer.appendChild(categoryDiv);
   });
+
+  // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
+  loadFromLocalStorage();
 }

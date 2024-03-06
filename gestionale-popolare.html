@@ -15,7 +15,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
     ></script>
     <!-- Theme favicon -->
-    <link rel="shortcut icon" href="assets/favicon-c43f27ef.ico" />
+    <link rel="shortcut icon" href="assets/img/favicon.ico" />
     <!-- Toaster CDN -->
     <link
       rel="stylesheet"
@@ -1694,7 +1694,10 @@
             >
               <!-- Menu Dinamico -->
             </div>
-
+<!-- Contenitore del pop-up -->
+<div class=" border border-default-200 c rounded-lg  shadow-lg" id="popup-container">
+  <span class="font-semibold text-lg text-primary" id="close-button" onclick="closePopup()">X</span>
+</div>
             <!-- end grid -->
             <!-- end flex -->
           </div>
@@ -1726,7 +1729,7 @@
                       <label class="ps-3 inline-flex items-center text-default-600 text-sm select-none" for="Guest">Volontario</label>
                     </div>
                 </div>
-                <button id="check-out" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" onclick="saveSelectedInput()">
+                <button id="check-out" class="opacity-50 w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500" onclick="saveSelectedInput()">
                   Conto
                 </button>
             </div>
@@ -1902,20 +1905,53 @@
         </div>
       </div>
     </footer> -->
+    
+    <style>
+      /* Aggiungi stili CSS per il pop-up */
+      #popup-container {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 20px;
+          background-color: #fff;
+          z-index: 1000;
+      }
+
+      /* Aggiungi stili CSS per il pulsante di chiusura */
+      #close-button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+      }
+  </style>
 
 <script>    
     
-let GuestTypeSelectedInput = null;
+    let GuestTypeSelectedInput = null;
 
 function toggleCheck(checkedId, uncheckedId) {
   var checkedCheckbox = document.getElementById(checkedId);
   var uncheckedCheckbox = document.getElementById(uncheckedId);
 
+  // Verifica se il checkbox "Client" è selezionato
+  var clientCheckbox = document.getElementById('Client');
+
   if (checkedCheckbox.checked) {
     uncheckedCheckbox.checked = false;
     GuestTypeSelectedInput = checkedId; // Salva l'id del checkbox selezionato nella variabile globale
+  } else if (clientCheckbox.checked) {
+    // Se il checkbox "Client" è selezionato, imposta GuestTypeSelectedInput su 'Client'
+    GuestTypeSelectedInput = 'Client';
   }
 }
+
+// Imposta il checkbox "Client" come selezionato di default
+document.getElementById('Client').checked = true;
+// Aggiorna la variabile globale
+GuestTypeSelectedInput = 'Client';
 
 function saveSelectedInput() {
   if (GuestTypeSelectedInput !== null) {
@@ -1925,6 +1961,12 @@ function saveSelectedInput() {
     console.log("Nessun checkbox selezionato.");
   }
 }
+
+    // Funzione per chiudere il pop-up
+    function closePopup() {
+        const popupContainer = document.getElementById('popup-container');
+        popupContainer.style.display = 'none';
+    }
   
 </script>
 
