@@ -279,17 +279,18 @@ function initializeApp(json) {
         // Chiamare la funzione transformAndSaveOrderData con il JSON risultante
         const transformedOrderData = transformAndSaveOrderData(orderDataJson);
 
-        // Chiamare la funzione showPopupOrderData con i dati trasformati
-        showPopupOrderData(transformedOrderData, grandTotal);
-
         // Chiama la funzione per inviare i dati dell'ordine al database
         inviaDatiOrdine();
 
-        // Svuotare le variabile
-        orderData = [];
-        //OredNub = [];
-        totalPriceSum = 0;
-        grandTotal = 0;
+        // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
+        setTimeout(function () {
+          // Chiamare la funzione showPopupOrderData con i dati trasformati
+          showPopupOrderData(transformedOrderData, grandTotal);
+          // Svuotare le variabile
+          orderData = [];
+          totalPriceSum = 0;
+          grandTotal = 0;
+        }, 500);
       } else {
         // Alert o messaggio che informa l'utente che non può effettuare il check-out
         toastr.error("Il carrello è vuoto!", "Errore");
@@ -823,12 +824,10 @@ function initializeApp(json) {
       .then((data) => {
         // Salva l'ID dell'ordine nella variabile globale
         idOrdineCreato = data.id;
-        console.log(idOrdineCreato);
-
         console.log("Nuovo ordine creato:", datiOrdineConNumero);
 
         // Aggiorna il campo dell'ordine visualizzato con l'ID restituito dal server
-        alert(
+        console.log(
           `Nuovo ordine creato con successo! Numero ordine: ${idOrdineCreato}`
         );
       })
