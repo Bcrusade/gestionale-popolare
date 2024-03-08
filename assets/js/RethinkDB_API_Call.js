@@ -426,7 +426,7 @@ function initializeApp(json) {
     const noteHtml = `
     <div class="flex justify-between m-3">
       <p class="text-base text-default-700 font-bold">Totale: </p>
-      <p id="Totale" class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
+      <p class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
     </div>
   `;
     orderItems.forEach((item) => {
@@ -455,7 +455,7 @@ function initializeApp(json) {
     OrderItemList = JSON.parse(localStorage.getItem("OrderItemList")) || [];
 
     // Carica la somma totale
-    OrderTotalSum = parseInt(localStorage.getItem("OrderTotalSum"), 10) || 0;
+    OrderTotalSum = parseFloat(localStorage.getItem("OrderTotalSum"), 10) || 0;
 
     // Carica ordini totali
     numeroOrdineIncrementale =
@@ -463,11 +463,11 @@ function initializeApp(json) {
 
     // Carica OrderdTotalClient
     OrderdTotalClient =
-      parseInt(localStorage.getItem("OrderdTotalClient"), 10) || 0;
+      parseFloat(localStorage.getItem("OrderdTotalClient"), 10) || 0;
 
     // Carica OrderdTotalGuest
     OrderdTotalGuest =
-      parseInt(localStorage.getItem("OrderdTotalGuest"), 10) || 0;
+      parseFloat(localStorage.getItem("OrderdTotalGuest"), 10) || 0;
   }
 
   // Funzione per salvare i dati nel localStorage
