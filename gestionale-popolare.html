@@ -1695,10 +1695,13 @@
             >
               <!-- Menu Dinamico -->
             </div>
+            <!-- Aggiungi questo elemento nel tuo HTML -->
+<div id="overlay"></div>
 <!-- Contenitore del pop-up -->
 <div class=" border border-default-200 c rounded-lg  shadow-lg" id="popup-container">
   <span class="font-semibold text-lg text-primary" id="close-button" onclick="closePopup()">X</span>
 </div>
+
             <!-- end grid -->
             <!-- end flex -->
           </div>
@@ -1927,9 +1930,37 @@
           right: 10px;
           cursor: pointer;
       }
+      /* Aggiungi questo stile al tuo foglio di stile CSS o direttamente nel tuo codice JavaScript */
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
   </style>
 
 <script>    
+
+// Aggiungi questa funzione nel tuo codice JavaScript
+function confirmPopup() {
+  // Puoi eseguire le azioni desiderate quando l'utente conferma il popup
+  console.log("Popup confermato");
+  // Chiudi il popup
+  closePopup();
+}
+
+function closePopup() {
+  const popupContainer = document.getElementById("popup-container");
+  const overlay = document.getElementById("overlay");
+
+  // Nascondi il popup e l'overlay
+  popupContainer.style.display = "none";
+  overlay.style.display = "none";
+}
     
     let GuestTypeSelectedInput = null;
 
@@ -1963,11 +1994,6 @@ function saveSelectedInput() {
   }
 }
 
-    // Funzione per chiudere il pop-up
-    function closePopup() {
-        const popupContainer = document.getElementById('popup-container');
-        popupContainer.style.display = 'none';
-    }
   
 </script>
 

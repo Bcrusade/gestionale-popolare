@@ -45,7 +45,7 @@ let totalPriceSum = 0;
 // Variabile per salvare i totale di tutti i valori in globalPrice
 let grandTotal = 0;
 // Dichiarazione di una variabile per tenere traccia del numero d'ordine
-let numeroOrdineIncrementale = 1;
+let numeroOrdineIncrementale = 0;
 // Dichiarazione dell'array al di fuori della funzione
 let OrderItemList = [];
 // Variabile globale per la somma INCASSO totale
@@ -433,6 +433,9 @@ function initializeApp(json) {
       <p class="text-base text-default-700 font-bold">Totale: </p>
       <p class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
     </div>
+    <div class="flex justify-center mt-4">
+      <button onclick="confirmPopup()" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">Conferma</button>
+    </div>
   `;
     orderItems.forEach((item) => {
       htmlContent += `
@@ -447,33 +450,38 @@ function initializeApp(json) {
     `;
     });
     htmlContent += noteHtml;
+
     // Assegna l'HTML al contenitore del pop-up
     popupContainer.innerHTML = `<span class="font-semibold text-primary text-xl" id="close-button" onclick="closePopup()">X</span>${htmlContent}`;
 
     // Mostra il pop-up
     popupContainer.style.display = "block";
+
+    // Aggiungi il codice per mostrare l'overlay
+    const overlay = document.getElementById("overlay");
+    overlay.style.display = "block";
   }
 
   // Funzione per caricare i dati dal localStorage
-  function loadFromLocalStorage() {
-    // Carica l'array
-    OrderItemList = JSON.parse(localStorage.getItem("OrderItemList")) || [];
+  // function loadFromLocalStorage() {
+  //   // Carica l'array
+  //   OrderItemList = JSON.parse(localStorage.getItem("OrderItemList")) || [];
 
-    // Carica la somma totale
-    OrderTotalSum = parseFloat(localStorage.getItem("OrderTotalSum"), 10) || 0;
+  //   // Carica la somma totale
+  //   OrderTotalSum = parseFloat(localStorage.getItem("OrderTotalSum"), 10) || 0;
 
-    // Carica ordini totali
-    numeroOrdineIncrementale =
-      parseInt(localStorage.getItem("TotalOrder"), 10) || 0;
+  //   // Carica ordini totali
+  //   numeroOrdineIncrementale =
+  //     parseInt(localStorage.getItem("TotalOrder"), 10) || 0;
 
-    // Carica OrderdTotalClient
-    OrderdTotalClient =
-      parseFloat(localStorage.getItem("OrderdTotalClient"), 10) || 0;
+  //   // Carica OrderdTotalClient
+  //   OrderdTotalClient =
+  //     parseFloat(localStorage.getItem("OrderdTotalClient"), 10) || 0;
 
-    // Carica OrderdTotalGuest
-    OrderdTotalGuest =
-      parseFloat(localStorage.getItem("OrderdTotalGuest"), 10) || 0;
-  }
+  //   // Carica OrderdTotalGuest
+  //   OrderdTotalGuest =
+  //     parseFloat(localStorage.getItem("OrderdTotalGuest"), 10) || 0;
+  // }
 
   // Funzione per salvare i dati nel localStorage
   function saveToLocalStorage() {
@@ -835,5 +843,5 @@ function initializeApp(json) {
   }
 
   // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
-  loadFromLocalStorage();
+  //loadFromLocalStorage();
 }
