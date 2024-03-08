@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carica i dati JSON dall'API e avvia l'applicazione
   loadExternalJsonAndInitialize(apiUrl);
+  console.log(idOrdineCreato);
 });
 
 // Modifica la funzione loadExternalJsonAndInitialize per utilizzare la chiamata API
@@ -57,6 +58,8 @@ let OrderdTotalGuest = 0;
 let orderData = [];
 // Contatore globale per OrderNub
 let orderNubCounter = 1;
+// Dichiarazione della variabile globale per salvare l'ID dell'ordine
+let idOrdineCreato;
 
 function clearContainers() {
   const containerRiepilogo = document.getElementById("container-riepilogo");
@@ -420,9 +423,10 @@ function initializeApp(json) {
     const popupContainer = document.getElementById("popup-container");
 
     const GragrandTotal = grandTotal;
+    console.log(idOrdineCreato);
 
     // Creare HTML dinamico con i dati mappati
-    let htmlContent = `<h4 class="text-base text-default-700 font-bold">Ordine N.${orderKey}</h4>`;
+    let htmlContent = `<h4 class="text-base text-default-700 font-bold">Ordine N.${idOrdineCreato}</h4>`;
     const noteHtml = `
     <div class="flex justify-between m-3">
       <p class="text-base text-default-700 font-bold">Totale: </p>
@@ -795,6 +799,41 @@ function initializeApp(json) {
     // Append the category div to the category list container
     categoryListContainer.appendChild(categoryDiv);
   });
+
+  // Funzione per inviare i dati dell'ordine al database
+  function inviaDatiOrdine() {
+    // Crea un oggetto con i dati dell'ordine
+    const datiOrdineConNumero = {
+      guest: GuestTypeSelectedInput,
+      order: numeroOrdineIncrementale,
+      total: grandTotal,
+    };
+
+    console.log("Dati dell'ordine:", datiOrdineConNumero);
+
+    // Esegui la richiesta POST
+    fetch("http://localhost:3000/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datiOrdineConNumero),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Salva l'ID dell'ordine nella variabile globale
+        idOrdineCreato = data.id;
+        console.log(idOrdineCreato);
+
+        console.log("Nuovo ordine creato:", datiOrdineConNumero);
+
+        // Aggiorna il campo dell'ordine visualizzato con l'ID restituito dal server
+        alert(
+          `Nuovo ordine creato con successo! Numero ordine: ${idOrdineCreato}`
+        );
+      })
+      .catch((error) => console.error("Errore:", error));
+  }
 
   // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
   loadFromLocalStorage();
