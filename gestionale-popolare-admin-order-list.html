@@ -315,6 +315,10 @@
       let OrderdTotalGuest = 0;
       let orderData = [];
       let loadedOrderIds = [];
+      // Variabile globale per memorizzare i numeri d'ordine
+      let globalOrderNumbers = [];
+      // Variabile globale per memorizzare l'ultimo numero d'ordine
+      let lastOrderNumber = null;
 
       // Funzione per caricare i dati dal localStorage
       function loadFromLocalStorage() {
@@ -341,7 +345,8 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
         loadFromLocalStorage();
-        updatePage(); // Chiamata iniziale per visualizzare i valori all'avvio
+        // Chiamata iniziale per visualizzare i valori all'avvio
+        updatePage();
         // Chiamata iniziale per caricare i dati dal server
         fetchAndDisplayOrders();
 
@@ -359,34 +364,48 @@
         // }, 5000);
       });
 
-      function updatePage() {
-        // Esegui l'aggiornamento dei valori qui
-        loadFromLocalStorage();
-        // Aggiorna il contenuto dell'elemento con l'ID "ordini_totali"
-        const elementoOrdiniTotali = document.getElementById("ordini_totali");
-        elementoOrdiniTotali.innerText = numeroOrdineIncrementale;
-
-        // Aggiorna il contenuto dell'elemento con l'ID "bilancio_totale"
-        const elementoSommaTotali = document.getElementById("bilancio_totale");
-        elementoSommaTotali.innerText = formatCurrency(OrderTotalSum);
-
-        // Aggiorna il contenuto dell'elemento con l'ID "bilancio_clienti"
-        const elementoTotaleCliente =
-          document.getElementById("bilancio_clienti");
-        elementoTotaleCliente.innerText = formatCurrency(OrderdTotalClient);
-
-        // Aggiorna il contenuto dell'elemento con l'ID "bilancio_volontari"
-        const elementoTotaleVolontari =
-          document.getElementById("bilancio_volontari");
-        elementoTotaleVolontari.innerText = formatCurrency(OrderdTotalGuest);
+      function formatCurrency(amount) {
+        return amount.toFixed(2) + " €"; // Formattazione dell'importo con due decimali e il simbolo dell'euro
       }
 
-      // Formatta il valore come valuta (ad esempio, aggiungi il simbolo €)
-      function formatCurrency(value) {
-        return new Intl.NumberFormat("it-IT", {
-          style: "currency",
-          currency: "EUR",
-        }).format(value);
+      function updatePage() {
+        // Aggiorna il contenuto dell'elemento con l'ID "ordini_totali"
+        const elementoOrdiniTotali = document.getElementById("ordini_totali");
+        elementoOrdiniTotali.innerText = lastOrderNumber;
+        console.log("Last Order Number:", lastOrderNumber);
+
+        // Effettua una richiesta AJAX per ottenere i valori dalla tabella incasso
+        fetch("http://localhost:3000/api/incassi")
+          .then((response) => response.json())
+          .then((data) => {
+            // Estrai i valori dalla risposta
+            const { OrderTotalSum, OrderdTotalClient, OrderdTotalGuest } = data;
+
+            // Aggiorna il contenuto dell'elemento con l'ID "bilancio_totale"
+            const elementoSommaTotali =
+              document.getElementById("bilancio_totale");
+            elementoSommaTotali.innerText = formatCurrency(OrderTotalSum);
+            console.log("Order Total Sum:", OrderTotalSum);
+
+            // Aggiorna il contenuto dell'elemento con l'ID "bilancio_clienti"
+            const elementoTotaleCliente =
+              document.getElementById("bilancio_clienti");
+            elementoTotaleCliente.innerText = formatCurrency(OrderdTotalClient);
+            console.log("Order Total Client:", OrderdTotalClient);
+
+            // Aggiorna il contenuto dell'elemento con l'ID "bilancio_volontari"
+            const elementoTotaleVolontari =
+              document.getElementById("bilancio_volontari");
+            elementoTotaleVolontari.innerText =
+              formatCurrency(OrderdTotalGuest);
+            console.log("Order Total Guest:", OrderdTotalGuest);
+          })
+          .catch((error) => {
+            console.error(
+              "Errore durante il recupero dei dati dalla tabella incasso:",
+              error
+            );
+          });
       }
 
       // Funzione per caricare i dati dal server e aggiornare la tabella
@@ -405,6 +424,9 @@
             ...loadedOrderIds,
             ...newOrders.map((order) => order.id),
           ];
+
+          // Ordina i nuovi ordini per data dal più recente al meno recente
+          newOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
 
           // Aggiungi solo i nuovi ordini alla tabella
           displayOrdersTable(newOrders);
@@ -438,13 +460,18 @@
             const formattedDate = order.date.substring(0, 10); // Ottieni i primi 10 caratteri come data (YYYY-MM-DD)
             const formattedTime = order.date.substring(11, 19); // Ottieni i successivi 8 caratteri come ora (HH:mm:ss)
 
+            // Salva il numero d'ordine nella variabile globale
+            globalOrderNumbers.push(order.numeroOrdine);
+            // Aggiornamento dell'ultimo numero d'ordine
+            lastOrderNumber = order.numeroOrdine;
+
             // Creare la riga della tabella
             const row = document.createElement("tr");
             row.id = `order-row-${order.id}`;
             row.innerHTML = `
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${formattedDate} ${formattedTime}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">#${order.id}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${order.order}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${order.numeroOrdine}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${order.guest}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${order.total} €</td>
       `;

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Carica i dati JSON dall'API e avvia l'applicazione
   loadExternalJsonAndInitialize(apiUrl);
-  console.log(idOrdineCreato);
+  //console.log(idOrdineCreato);
 });
 
 // Modifica la funzione loadExternalJsonAndInitialize per utilizzare la chiamata API
@@ -282,15 +282,38 @@ function initializeApp(json) {
         // Chiama la funzione per inviare i dati dell'ordine al database
         inviaDatiOrdine();
 
-        // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
-        setTimeout(function () {
-          // Chiamare la funzione showPopupOrderData con i dati trasformati
-          showPopupOrderData(transformedOrderData, grandTotal);
-          // Svuotare le variabile
-          orderData = [];
-          totalPriceSum = 0;
-          grandTotal = 0;
-        }, 500);
+        // Chiamata alla funzione inviaDatiIncasso con le variabili globali necessarie come parametri
+        if (
+          OrderTotalSum !== null &&
+          OrderdTotalClient !== null &&
+          OrderdTotalGuest !== null
+        ) {
+          inviaDatiIncasso(OrderTotalSum, OrderdTotalClient, OrderdTotalGuest);
+
+          // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
+          setTimeout(function () {
+            // Chiamare la funzione showPopupOrderData con i dati trasformati
+            showPopupOrderData(transformedOrderData, grandTotal);
+            // Svuotare le variabile
+            orderData = [];
+            totalPriceSum = 0;
+            grandTotal = 0;
+          }, 500);
+        } else {
+          console.error(
+            "Le variabili globali non sono definite correttamente."
+          );
+        }
+
+        // // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
+        // setTimeout(function () {
+        //   // Chiamare la funzione showPopupOrderData con i dati trasformati
+        //   showPopupOrderData(transformedOrderData, grandTotal);
+        //   // Svuotare le variabile
+        //   orderData = [];
+        //   totalPriceSum = 0;
+        //   grandTotal = 0;
+        // }, 500);
       } else {
         // Alert o messaggio che informa l'utente che non può effettuare il check-out
         toastr.error("Il carrello è vuoto!", "Errore");
@@ -301,20 +324,80 @@ function initializeApp(json) {
   // Funzione per inviare i dati dell'ordine al database
   function inviaDatiOrdine() {
     // Crea un oggetto con i dati dell'ordine
-    const datiOrdine = {
+    const datiOrdineConNumero = {
       guest: GuestTypeSelectedInput,
       order: numeroOrdineIncrementale,
       total: grandTotal,
     };
 
-    console.log("Dati dell'ordine:", datiOrdine);
+    console.log("Dati dell'ordine:", datiOrdineConNumero);
 
+    // Esegui la richiesta POST
     fetch("http://localhost:3000/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(datiOrdine),
+      body: JSON.stringify(datiOrdineConNumero),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Salva l'ID dell'ordine nella variabile globale
+        idOrdineCreato = data.id;
+        console.log("Nuovo ordine creato:", datiOrdineConNumero);
+
+        // Aggiorna il campo dell'ordine visualizzato con l'ID restituito dal server
+        console.log(
+          `Nuovo ordine creato con successo! Numero ordine: ${idOrdineCreato}`
+        );
+      })
+      .catch((error) => console.error("Errore:", error));
+  }
+
+  // // Funzione per inviare i dati dell'ordine al database
+  // function inviaDatiOrdine() {
+  //   // Crea un oggetto con i dati dell'ordine
+  //   const datiOrdine = {
+  //     guest: GuestTypeSelectedInput,
+  //     order: numeroOrdineIncrementale,
+  //     total: grandTotal,
+  //   };
+
+  //   console.log("Dati dell'ordine:", datiOrdine);
+
+  //   fetch("http://localhost:3000/api/orders", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(datiOrdine),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data))
+  //     .catch((error) => console.error("Errore:", error));
+  // }
+
+  // Definizione della funzione inviaDatiIncasso che accetta le variabili globali come parametri
+  function inviaDatiIncasso(
+    OrderTotalSum,
+    OrderdTotalClient,
+    OrderdTotalGuest
+  ) {
+    // Crea un oggetto con i dati dell'incasso
+    const datiIncasso = {
+      OrderTotalSum: OrderTotalSum,
+      OrderdTotalClient: OrderdTotalClient,
+      OrderdTotalGuest: OrderdTotalGuest,
+    };
+
+    console.log("Dati dell'incasso:", datiIncasso);
+
+    fetch("http://localhost:3000/api/incassi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datiIncasso),
     })
       .then((response) => response.json())
       .then((data) => console.log(data))
@@ -808,39 +891,6 @@ function initializeApp(json) {
     // Append the category div to the category list container
     categoryListContainer.appendChild(categoryDiv);
   });
-
-  // Funzione per inviare i dati dell'ordine al database
-  function inviaDatiOrdine() {
-    // Crea un oggetto con i dati dell'ordine
-    const datiOrdineConNumero = {
-      guest: GuestTypeSelectedInput,
-      order: numeroOrdineIncrementale,
-      total: grandTotal,
-    };
-
-    console.log("Dati dell'ordine:", datiOrdineConNumero);
-
-    // Esegui la richiesta POST
-    fetch("http://localhost:3000/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datiOrdineConNumero),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Salva l'ID dell'ordine nella variabile globale
-        idOrdineCreato = data.id;
-        console.log("Nuovo ordine creato:", datiOrdineConNumero);
-
-        // Aggiorna il campo dell'ordine visualizzato con l'ID restituito dal server
-        console.log(
-          `Nuovo ordine creato con successo! Numero ordine: ${idOrdineCreato}`
-        );
-      })
-      .catch((error) => console.error("Errore:", error));
-  }
 
   // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
   //loadFromLocalStorage();
