@@ -341,29 +341,6 @@
           parseFloat(localStorage.getItem("OrderdTotalGuest")) || 0;
       }
 
-      // Assicurati che questo script venga eseguito dopo il caricamento completo dell'HTML
-      document.addEventListener("DOMContentLoaded", function () {
-        // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
-        loadFromLocalStorage();
-        // Chiamata iniziale per visualizzare i valori all'avvio
-        updatePage();
-        // Chiamata iniziale per caricare i dati dal server
-        fetchAndDisplayOrders();
-
-        // Aggiorna i valori ogni 1 secondi
-        setInterval(updatePage, 5000);
-
-        // Aggiorna i valori e la tabella ogni 5 secondi
-        setInterval(fetchAndDisplayOrders, 5000);
-
-        // setInterval(function () {
-        //   // Assicurati di avere i dati necessari per la funzione displayOrdersTable
-        //   if (orderData) {
-        //     displayOrdersTable(orderData);
-        //   }
-        // }, 5000);
-      });
-
       function formatCurrency(amount) {
         return amount.toFixed(2) + " €"; // Formattazione dell'importo con due decimali e il simbolo dell'euro
       }
@@ -379,26 +356,25 @@
           .then((response) => response.json())
           .then((data) => {
             // Estrai i valori dalla risposta
-            const { OrderTotalSum, OrderdTotalClient, OrderdTotalGuest } = data;
+            const { IncassoTotale, IncassoCliente, IncassoOspite } = data;
 
             // Aggiorna il contenuto dell'elemento con l'ID "bilancio_totale"
             const elementoSommaTotali =
               document.getElementById("bilancio_totale");
-            elementoSommaTotali.innerText = formatCurrency(OrderTotalSum);
-            console.log("Order Total Sum:", OrderTotalSum);
+            elementoSommaTotali.innerText = formatCurrency(IncassoTotale);
+            console.log("Order Total Sum:", IncassoTotale);
 
             // Aggiorna il contenuto dell'elemento con l'ID "bilancio_clienti"
             const elementoTotaleCliente =
               document.getElementById("bilancio_clienti");
-            elementoTotaleCliente.innerText = formatCurrency(OrderdTotalClient);
-            console.log("Order Total Client:", OrderdTotalClient);
+            elementoTotaleCliente.innerText = formatCurrency(IncassoCliente);
+            console.log("Order Total Client:", IncassoCliente);
 
             // Aggiorna il contenuto dell'elemento con l'ID "bilancio_volontari"
             const elementoTotaleVolontari =
               document.getElementById("bilancio_volontari");
-            elementoTotaleVolontari.innerText =
-              formatCurrency(OrderdTotalGuest);
-            console.log("Order Total Guest:", OrderdTotalGuest);
+            elementoTotaleVolontari.innerText = formatCurrency(IncassoOspite);
+            console.log("Order Total Guest:", IncassoOspite);
           })
           .catch((error) => {
             console.error(
@@ -414,6 +390,9 @@
           const response = await fetch("http://localhost:3000/api/orders");
           const newOrderData = await response.json();
 
+          // Ordina i nuovi ordini per data dal più recente al meno recente
+          newOrderData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
           // Filtra solo i nuovi ordini non ancora caricati
           const newOrders = newOrderData.filter(
             (order) => !loadedOrderIds.includes(order.id)
@@ -425,33 +404,23 @@
             ...newOrders.map((order) => order.id),
           ];
 
-          // Ordina i nuovi ordini per data dal più recente al meno recente
-          newOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-
           // Aggiungi solo i nuovi ordini alla tabella
-          displayOrdersTable(newOrders);
+          appendNewOrders(newOrders);
 
-          // Aggiungi l'intervallo per aggiornare la tabella ogni 5 secondi
-          setInterval(function () {
-            // Assicurati di avere i dati necessari per la funzione displayOrdersTable
-            if (orderData) {
-              displayOrdersTable(orderData);
-              console.log("Nuovi ordini:", orderData);
-            }
-          }, 50000);
+          console.log("Nuovi ordini:", newOrders);
         } catch (error) {
           console.error("Errore nella richiesta API:", error);
         }
       }
 
-      // Funzione per visualizzare gli ordini nella tabella
-      function displayOrdersTable(newOrders) {
-        // Ordina gli ordini in base alla data e all'ora (dalla più recente alla più vecchia)
-        newOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+      // Funzione per aggiungere solo i nuovi ordini alla tabella
+      function appendNewOrders(newOrders) {
         const tableBody = document.getElementById("orders-table-body");
 
-        newOrders.forEach((order) => {
+        // Itera sui nuovi ordini mantenendo l'ordine corretto
+        for (let i = 0; i < newOrders.length; i++) {
+          const order = newOrders[i];
+
           // Verifica se l'ordine è già presente nella tabella
           const existingRow = document.getElementById(`order-row-${order.id}`);
 
@@ -476,11 +445,27 @@
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-500">${order.total} €</td>
       `;
 
-            // Aggiungere la riga alla tabella
-            tableBody.appendChild(row);
+            // Aggiungere la riga alla tabella all'inizio
+            tableBody.insertBefore(row, tableBody.firstChild);
           }
-        });
+        }
       }
+
+      // Assicurati che questo script venga eseguito dopo il caricamento completo dell'HTML
+      document.addEventListener("DOMContentLoaded", function () {
+        // Chiamata alla funzione per caricare i dati dal localStorage all'inizializzazione
+        loadFromLocalStorage();
+        // // Chiamata iniziale per visualizzare i valori all'avvio
+        updatePage();
+        // // Chiamata iniziale per caricare i dati dal server
+        fetchAndDisplayOrders();
+
+        // Aggiorna i valori ogni 2 secondi
+        setInterval(updatePage, 10000);
+
+        // Aggiorna i valori e la tabella ogni 5 secondi
+        setInterval(fetchAndDisplayOrders, 10000);
+      });
 
       // function generateStarIcons(rating) {
       //   const stars = Array.from(

@@ -282,38 +282,38 @@ function initializeApp(json) {
         // Chiama la funzione per inviare i dati dell'ordine al database
         inviaDatiOrdine();
 
-        // Chiamata alla funzione inviaDatiIncasso con le variabili globali necessarie come parametri
-        if (
-          OrderTotalSum !== null &&
-          OrderdTotalClient !== null &&
-          OrderdTotalGuest !== null
-        ) {
-          inviaDatiIncasso(OrderTotalSum, OrderdTotalClient, OrderdTotalGuest);
+        // // Chiamata alla funzione inviaDatiIncasso con le variabili globali necessarie come parametri
+        // if (
+        //   OrderTotalSum !== null &&
+        //   OrderdTotalClient !== null &&
+        //   OrderdTotalGuest !== null
+        // ) {
+        //   inviaDatiIncasso(OrderTotalSum, OrderdTotalClient, OrderdTotalGuest);
 
-          // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
-          setTimeout(function () {
-            // Chiamare la funzione showPopupOrderData con i dati trasformati
-            showPopupOrderData(transformedOrderData, grandTotal);
-            // Svuotare le variabile
-            orderData = [];
-            totalPriceSum = 0;
-            grandTotal = 0;
-          }, 500);
-        } else {
-          console.error(
-            "Le variabili globali non sono definite correttamente."
-          );
-        }
+        //   // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
+        //   setTimeout(function () {
+        //     // Chiamare la funzione showPopupOrderData con i dati trasformati
+        //     showPopupOrderData(transformedOrderData, grandTotal);
+        //     // Svuotare le variabile
+        //     orderData = [];
+        //     totalPriceSum = 0;
+        //     grandTotal = 0;
+        //   }, 500);
+        // } else {
+        //   console.error(
+        //     "Le variabili globali non sono definite correttamente."
+        //   );
+        // }
 
-        // // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
-        // setTimeout(function () {
-        //   // Chiamare la funzione showPopupOrderData con i dati trasformati
-        //   showPopupOrderData(transformedOrderData, grandTotal);
-        //   // Svuotare le variabile
-        //   orderData = [];
-        //   totalPriceSum = 0;
-        //   grandTotal = 0;
-        // }, 500);
+        // Utilizza setTimeout per ritardare l'esecuzione di showPopupOrderData di 1 secondo
+        setTimeout(function () {
+          // Chiamare la funzione showPopupOrderData con i dati trasformati
+          showPopupOrderData(transformedOrderData, grandTotal);
+          // Svuotare le variabile
+          orderData = [];
+          totalPriceSum = 0;
+          grandTotal = 0;
+        }, 500);
       } else {
         // Alert o messaggio che informa l'utente che non può effettuare il check-out
         toastr.error("Il carrello è vuoto!", "Errore");
@@ -354,55 +354,32 @@ function initializeApp(json) {
       .catch((error) => console.error("Errore:", error));
   }
 
-  // // Funzione per inviare i dati dell'ordine al database
-  // function inviaDatiOrdine() {
-  //   // Crea un oggetto con i dati dell'ordine
-  //   const datiOrdine = {
-  //     guest: GuestTypeSelectedInput,
-  //     order: numeroOrdineIncrementale,
-  //     total: grandTotal,
+  // // Definizione della funzione inviaDatiIncasso che accetta le variabili globali come parametri
+  // function inviaDatiIncasso(
+  //   OrderTotalSum,
+  //   OrderdTotalClient,
+  //   OrderdTotalGuest
+  // ) {
+  //   // Crea un oggetto con i dati dell'incasso
+  //   const datiIncasso = {
+  //     OrderTotalSum: OrderTotalSum,
+  //     OrderdTotalClient: OrderdTotalClient,
+  //     OrderdTotalGuest: OrderdTotalGuest,
   //   };
 
-  //   console.log("Dati dell'ordine:", datiOrdine);
+  //   console.log("Dati dell'incasso:", datiIncasso);
 
-  //   fetch("http://localhost:3000/api/orders", {
+  //   fetch("http://localhost:3000/api/incassi", {
   //     method: "POST",
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
-  //     body: JSON.stringify(datiOrdine),
+  //     body: JSON.stringify(datiIncasso),
   //   })
   //     .then((response) => response.json())
   //     .then((data) => console.log(data))
   //     .catch((error) => console.error("Errore:", error));
   // }
-
-  // Definizione della funzione inviaDatiIncasso che accetta le variabili globali come parametri
-  function inviaDatiIncasso(
-    OrderTotalSum,
-    OrderdTotalClient,
-    OrderdTotalGuest
-  ) {
-    // Crea un oggetto con i dati dell'incasso
-    const datiIncasso = {
-      OrderTotalSum: OrderTotalSum,
-      OrderdTotalClient: OrderdTotalClient,
-      OrderdTotalGuest: OrderdTotalGuest,
-    };
-
-    console.log("Dati dell'incasso:", datiIncasso);
-
-    fetch("http://localhost:3000/api/incassi", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datiIncasso),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Errore:", error));
-  }
 
   // Aggiungi un listener per l'evento beforeunload per assicurarti che i dati vengano salvati prima di lasciare la pagina
   window.addEventListener("beforeunload", () => {
