@@ -1957,6 +1957,12 @@ function closePopup() {
   const popupContainer = document.getElementById("popup-container");
   const overlay = document.getElementById("overlay");
 
+  // Imposta il checkbox "Client" come selezionato di default
+document.getElementById('Client').checked = true;
+document.getElementById('Guest').checked = false;
+// Aggiorna la variabile globale
+GuestTypeSelectedInput = 'Client';
+
   // Nascondi il popup e l'overlay
   popupContainer.style.display = "none";
   overlay.style.display = "none";
