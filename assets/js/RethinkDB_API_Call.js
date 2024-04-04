@@ -1,7 +1,7 @@
 // Funzione principale che viene eseguita una volta che il DOM è pronto
 document.addEventListener("DOMContentLoaded", function () {
   // URL dell'API da cui ottenere i dati JSON
-  const apiUrl = "http://localhost:3000/api/menu";
+  const apiUrl = "http://192.168.1.9:3000/api/menu";
 
   // Carica i dati JSON dall'API e avvia l'applicazione
   loadExternalJsonAndInitialize(apiUrl);
@@ -333,7 +333,7 @@ function initializeApp(json) {
     console.log("Dati dell'ordine:", datiOrdineConNumero);
 
     // Esegui la richiesta POST
-    fetch("http://localhost:3000/api/orders", {
+    fetch("http://192.168.1.9:3000/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -369,7 +369,7 @@ function initializeApp(json) {
 
   //   console.log("Dati dell'incasso:", datiIncasso);
 
-  //   fetch("http://localhost:3000/api/incassi", {
+  //   fetch("http://192.168.1.9:3000/api/incassi", {
   //     method: "POST",
   //     headers: {
   //       "Content-Type": "application/json",

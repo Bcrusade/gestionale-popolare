@@ -352,7 +352,7 @@
         console.log("Last Order Number:", lastOrderNumber);
 
         // Effettua una richiesta AJAX per ottenere i valori dalla tabella incasso
-        fetch("http://localhost:3000/api/incassi")
+        fetch("http://192.168.1.9:3000/api/incassi")
           .then((response) => response.json())
           .then((data) => {
             // Estrai i valori dalla risposta
@@ -387,7 +387,7 @@
       // Funzione per caricare i dati dal server e aggiornare la tabella
       async function fetchAndDisplayOrders() {
         try {
-          const response = await fetch("http://localhost:3000/api/orders");
+          const response = await fetch("http://192.168.1.9:3000/api/orders");
           const newOrderData = await response.json();
 
           // Ordina i nuovi ordini per data dal più recente al meno recente
