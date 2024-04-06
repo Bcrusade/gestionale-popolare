@@ -494,7 +494,7 @@ function initializeApp(json) {
       <p class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
     </div>
     <div class="flex justify-center mt-4">
-      <button onclick="confirmPopup()" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">Conferma</button>
+      <button id="btn-confirm-order" onclick="confirmPopup()" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">Conferma</button>
     </div>
   `;
     orderItems.forEach((item) => {
@@ -520,6 +520,30 @@ function initializeApp(json) {
     // Aggiungi il codice per mostrare l'overlay
     const overlay = document.getElementById("overlay");
     overlay.style.display = "block";
+
+    // Stampare il contenuto HTML generato
+    printOrderData(htmlContent);
+  }
+
+  // Aggiungi un event listener al bottone di stampa
+  const printButton = document.getElementById("btn-confirm-order"); // Assicurati di sostituire 'printButton' con l'id del tuo bottone
+  printButton.addEventListener("click", function () {
+    // Chiamata alla funzione per mostrare il pop-up con i dati trasformati
+    showPopupOrderData(transformedDataJson, grandTotal);
+    // Mostra un alert per confermare che la stampa è stata avviata
+    alert("La stampa è stata avviata con successo!");
+  });
+
+  // Funzione per stampare i dati dell'ordine
+  function printOrderData(htmlContent) {
+    // Crea un oggetto di stampa
+    const printWindow = window.open("", "_blank");
+    // Aggiungi il contenuto HTML al documento di stampa
+    printWindow.document.write(htmlContent);
+    // Stampare il documento
+    printWindow.print();
+    // Chiudi la finestra di stampa dopo la stampa
+    printWindow.close();
   }
 
   // Funzione per caricare i dati dal localStorage
