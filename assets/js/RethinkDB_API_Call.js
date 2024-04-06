@@ -528,8 +528,8 @@ function initializeApp(json) {
   // Aggiungi un event listener al bottone di stampa
   const printButton = document.getElementById("btn-confirm-order"); // Assicurati di sostituire 'printButton' con l'id del tuo bottone
   printButton.addEventListener("click", function () {
-    // Chiamata alla funzione per mostrare il pop-up con i dati trasformati
-    showPopupOrderData(transformedDataJson, grandTotal);
+    // Chiamata alla funzione per stampare direttamente i dati
+    printOrderData(htmlContent);
     // Mostra un alert per confermare che la stampa è stata avviata
     alert("La stampa è stata avviata con successo!");
   });
