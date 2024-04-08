@@ -510,9 +510,10 @@ function initializeApp(json) {
     `;
     });
     htmlContent += noteHtml;
+    //console.log(htmlContent);
 
     // Assegna l'HTML al contenitore del pop-up
-    popupContainer.innerHTML = `<span class="font-semibold text-primary text-xl" id="close-button" onclick="closePopup()">X</span>${htmlContent}`;
+    popupContainer.innerHTML = `<span class="font-semibold text-primary text-xl no-print" id="close-button" onclick="closePopup()">X</span>${htmlContent}`;
 
     // Mostra il pop-up
     popupContainer.style.display = "block";
@@ -521,28 +522,57 @@ function initializeApp(json) {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "block";
 
-    // Stampare il contenuto HTML generato
-    printOrderData(htmlContent);
+    // Aggiungi un event listener al bottone di stampa
+    const printButton = document.getElementById("btn-confirm-order"); // Assicurati di sostituire 'printButton' con l'id del tuo bottone
+    printButton.addEventListener("click", function () {
+      // Chiamata alla funzione per stampare direttamente i dati
+      printOrderData(htmlContent);
+      // Mostra un alert per confermare che la stampa è stata avviata
+      //alert("La stampa è stata avviata con successo!");
+    });
   }
 
-  // Aggiungi un event listener al bottone di stampa
-  const printButton = document.getElementById("btn-confirm-order"); // Assicurati di sostituire 'printButton' con l'id del tuo bottone
-  printButton.addEventListener("click", function () {
-    // Chiamata alla funzione per stampare direttamente i dati
-    printOrderData(htmlContent);
-    // Mostra un alert per confermare che la stampa è stata avviata
-    alert("La stampa è stata avviata con successo!");
-  });
+  // Impostazione della larghezza della pagina da stampare a 58mm con margini
+  const style = `
+<style media="print">
+    @page {
+        size: 58mm 48mm; /* 58mm di larghezza e 48mm di altezza per includere i margini sopra e sotto */
+        margin: 5mm 0; /* 5mm di margine sopra e sotto */
+    }
+
+    /* Nascondi le intestazioni di pagina */
+    @page {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    /* Imposta tutti gli elementi in bianco e nero durante la stampa */
+    * {
+        filter: grayscale(100%);
+    }
+
+    /* Nascondi il bottone di chiusura durante la stampa */
+    #close-button {
+        display: none;
+    }
+</style>
+`;
 
   // Funzione per stampare i dati dell'ordine
-  function printOrderData(htmlContent) {
-    // Crea un oggetto di stampa
+  function printOrderData(PrintHtmlContent) {
     const printWindow = window.open("", "_blank");
+    const doc = printWindow.document;
+
+    // Aggiungi stile per la larghezza della pagina
+    doc.write(style);
+
     // Aggiungi il contenuto HTML al documento di stampa
-    printWindow.document.write(htmlContent);
-    // Stampare il documento
+    doc.open();
+    doc.write(PrintHtmlContent);
+    doc.close();
+
+    // Avvia la finestra di dialogo di stampa del browser
     printWindow.print();
-    // Chiudi la finestra di stampa dopo la stampa
     printWindow.close();
   }
 
