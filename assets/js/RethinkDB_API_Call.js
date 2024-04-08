@@ -531,7 +531,7 @@ function initializeApp(json) {
       <p class="text-base text-default-700 font-medium">${GragrandTotal} €</p>
     </div>
     <div class="flex justify-center mt-4">
-      <button id="btn-confirm-order" onclick="confirmPopup()" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">Conferma</button>
+      <button id="btn-confirm-order" onclick="confirmPopup()" class="w-full inline-flex items-center justify-center rounded-full border border-primary bg-primary px-10 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-500 hover:bg-primary-500">Stampa</button>
     </div>
   `;
     orderItems.forEach((item) => {
@@ -864,6 +864,13 @@ function initializeApp(json) {
             );
             minusInput.value = 1;
             plusInput.value = 1;
+            // Reimposta la variabile che tiene traccia del totale al suo valore iniziale
+            prezzoInizialeMap[menuId] = parseFloat(oggetto.price) || 0;
+            // Log del valore aggiornato di prezzoInizialeMap[menuId]
+            console.log(
+              "Valore aggiornato di prezzoInizialeMap[" + menuId + "]:",
+              prezzoInizialeMap[menuId]
+            );
           });
         }
 
