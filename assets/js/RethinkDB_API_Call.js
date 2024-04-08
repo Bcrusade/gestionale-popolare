@@ -135,7 +135,7 @@ function initializeApp(json) {
       objectDiv.innerHTML = `
         <!-- <img src="${objectDetails.img}" class="h-20 w-20 me-2"> -->
         <div>
-          <h4 class="text-sm text-default-600 mb-2 font-bold">${objectDetails.name}</h4>
+          <h4 id="objectDetailsName" class="text-sm text-default-600 mb-2 font-bold">${objectDetails.name}</h4>
           ${noteHtml}
           <h4 class="text-sm text-default-400 font-bold">${objectDetails.quantity} x <span class="text-primary font-semibold">€${objectDetails.price}</span>
           <button style="float: right;" class="font-bold text-default-950">X</button></h4>
@@ -152,50 +152,6 @@ function initializeApp(json) {
       // Aggiungere il nuovo div al container senza cancellare quello già esistente
       container.appendChild(objectDiv);
     });
-
-    // Funzione di eliminazione voce
-    function deleteObject(index) {
-      // Selezionare il div padre da rimuovere
-      const container = document.getElementById("container-riepilogo");
-      const divToRemove = document.getElementById(objectDetailsArray[index].ID);
-
-      // Log per il debugging
-      console.log("Elemento da rimuovere:", divToRemove);
-
-      // Verificare che l'elemento da rimuovere sia un figlio diretto del contenitore
-      if (divToRemove && divToRemove.parentNode === container) {
-        // Rimuovere l'elemento corrispondente dall'array di dettagli dell'oggetto
-        const removedObjectPrice = parseFloat(objectDetailsArray[index].price);
-        objectDetailsArray.splice(index, 1);
-
-        // Rimuovere il div dal DOM
-        container.removeChild(divToRemove);
-
-        // Sottrarre il prezzo dell'oggetto eliminato dalla somma totale
-        grandTotal -= removedObjectPrice;
-
-        // Assicurarsi che grandTotal non diventi mai negativo
-        grandTotal = Math.max(0, grandTotal);
-
-        // Aggiornare il contenuto dell'elemento con la nuova somma totale
-        totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
-
-        console.log("Totale aggiornato dopo l'eliminazione:", grandTotal);
-
-        // Aggiornare totalPriceSum sottraendo il prezzo dell'oggetto eliminato
-        totalPriceSum -= removedObjectPrice;
-
-        // Assicurarsi che totalPriceSum non diventi mai negativo
-        totalPriceSum = Math.max(0, totalPriceSum);
-
-        console.log("Totale riepilogo aggiornato:", totalPriceSum);
-      } else {
-        // Log se l'elemento non è stato trovato o non è un figlio diretto del contenitore
-        console.error(
-          "Errore: Elemento non trovato o non è un figlio diretto del contenitore."
-        );
-      }
-    }
 
     // Calcolare la somma totale di tutti i valori nella lista
     grandTotal = totalPriceList.reduce(
@@ -250,15 +206,96 @@ function initializeApp(json) {
     orderData.push(orderDetailsObject);
 
     // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
-    console.log("Ordine:", orderDetailsObject);
+    console.log("orderDetailsObject - Ordine:", orderDetailsObject);
 
     // Convertire l'oggetto in una stringa JSON e assegnarla a orderDataJson
-    const orderDataJson = JSON.stringify(orderData);
+    let orderDataJson = JSON.stringify(orderData);
 
     // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
-    console.log("Ordine JSON:", orderDataJson);
+    console.log("orderDataJson - Ordine JSON:", orderDataJson);
     // Ora puoi utilizzare orderDataJson per ottenere la rappresentazione JSON dei dati dell'ordine
-    console.log("Ordine:", orderData);
+    console.log(" orderData Ordine:", orderData);
+
+    // Funzione di eliminazione voce
+    function deleteObject(index) {
+      // Selezionare il div padre da rimuovere
+      const container = document.getElementById("container-riepilogo");
+      const divToRemove = document.getElementById(objectDetailsArray[index].ID);
+
+      // Selezionare l'elemento "objectDetailsName" all'interno del divToRemove
+      const objectDetailsName = divToRemove.querySelector("#objectDetailsName");
+
+      if (objectDetailsName) {
+        const objToRemoveFromJson = objectDetailsName.textContent.trim();
+        console.log(objToRemoveFromJson);
+
+        // Trova l'indice dell'elemento nell'array che ha il campo 'name' uguale a objToRemoveFromJson
+        const indexToRemove = orderData.findIndex(
+          (obj) => obj.name === objToRemoveFromJson
+        );
+
+        if (indexToRemove !== -1) {
+          // Rimuovi l'elemento trovato dall'array
+          const removedElement = orderData.splice(indexToRemove, 1)[0]; // Rimuovi e salva l'elemento rimosso
+
+          // Se desideri convertirlo nuovamente in JSON
+          const updatedOrderDataJson = JSON.stringify(orderData);
+
+          // Ora updatedOrderDataJson contiene il JSON aggiornato senza l'oggetto che aveva il name corrispondente a objToRemoveFromJson
+
+          // Aggiungi un console.log per visualizzare il JSON aggiornato
+          console.log(
+            "JSON aggiornato (senza l'elemento eliminato):",
+            updatedOrderDataJson
+          );
+
+          // Rimuovere l'elemento corrispondente dall'array di dettagli dell'oggetto
+          const removedObjectPrice = parseFloat(
+            objectDetailsArray[index].price
+          );
+          objectDetailsArray.splice(index, 1);
+
+          // Rimuovere il div dal DOM
+          container.removeChild(divToRemove);
+
+          // Sottrarre il prezzo dell'oggetto eliminato dalla somma totale
+          grandTotal -= removedObjectPrice;
+
+          // Assicurarsi che grandTotal non diventi mai negativo
+          grandTotal = Math.max(0, grandTotal);
+
+          // Aggiornare il contenuto dell'elemento con la nuova somma totale
+          totaleElement.textContent = `€ ${grandTotal.toFixed(2)}`;
+
+          console.log("Totale aggiornato dopo l'eliminazione:", grandTotal);
+
+          // Aggiornare totalPriceSum sottraendo il prezzo dell'oggetto eliminato
+          totalPriceSum -= removedObjectPrice;
+
+          // Assicurarsi che totalPriceSum non diventi mai negativo
+          totalPriceSum = Math.max(0, totalPriceSum);
+
+          console.log("Totale riepilogo aggiornato:", totalPriceSum);
+
+          // Aggiungi un console.log per visualizzare l'elemento eliminato
+          console.log("Elemento eliminato:", removedElement);
+
+          // Aggiorna l'ordine dei dati con i nuovi dati
+          // Non è necessario aggiornare orderDataJson in questo caso
+          console.log("orderData aggiornato:", orderData);
+        } else {
+          // Log se l'elemento non è stato trovato nell'array
+          console.error(
+            "Errore: L'elemento da rimuovere non è stato trovato nell'array."
+          );
+        }
+      } else {
+        // Log se l'elemento objectDetailsName non è stato trovato all'interno di divToRemove
+        console.error(
+          "Errore: L'elemento objectDetailsName non è stato trovato."
+        );
+      }
+    }
   }
 
   // Aggiungi l'evento di click all'elemento con ID "check-out"
@@ -274,7 +311,7 @@ function initializeApp(json) {
         checkoutButton.classList.add("opacity-50");
 
         // Ottenere il JSON risultante dalla variabile globale orderData
-        const orderDataJson = JSON.stringify(orderData);
+        let orderDataJson = JSON.stringify(orderData);
 
         // Chiamare la funzione transformAndSaveOrderData con il JSON risultante
         const transformedOrderData = transformAndSaveOrderData(orderDataJson);
@@ -817,6 +854,16 @@ function initializeApp(json) {
               // Aggiungi qui il codice per visualizzare un toast con l'avviso
               // Ad esempio, usando una libreria di toast come Toastify o simile
             }
+            // Resetta i valori di minus e plus a 1
+            quantityInput.value = 1;
+            var minusInput = menuElement.querySelector(
+              "input#quantity_" + menuId
+            );
+            var plusInput = menuElement.querySelector(
+              "input#quantity_" + menuId
+            );
+            minusInput.value = 1;
+            plusInput.value = 1;
           });
         }
 
