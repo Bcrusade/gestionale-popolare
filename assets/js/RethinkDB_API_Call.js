@@ -563,55 +563,79 @@ function initializeApp(json) {
     const printButton = document.getElementById("btn-confirm-order"); // Assicurati di sostituire 'printButton' con l'id del tuo bottone
     printButton.addEventListener("click", function () {
       // Chiamata alla funzione per stampare direttamente i dati
-      printOrderData(htmlContent);
+      printOrderData(transformedDataJson, grandTotal);
       // Mostra un alert per confermare che la stampa è stata avviata
-      //alert("La stampa è stata avviata con successo!");
+      // alert("La stampa è stata avviata con successo!");
     });
   }
 
-  // Impostazione della larghezza della pagina da stampare a 58mm con margini
-  const style = `
-<style media="print">
-    @page {
-        size: 58mm 48mm; /* 58mm di larghezza e 48mm di altezza per includere i margini sopra e sotto */
-        margin: 5mm 0; /* 5mm di margine sopra e sotto */
-    }
+  function printOrderData(transformedDataJson, grandTotal) {
+    // JSON da parsare
+    const jsonData = transformedDataJson;
+    // Converti la stringa JSON in un oggetto JavaScript
+    const orderData = JSON.parse(jsonData);
 
-    /* Nascondi le intestazioni di pagina */
-    @page {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
+    // Ottieni la chiave dinamica (potrebbe essere la prima chiave dell'oggetto)
+    const orderKey = Object.keys(orderData)[0];
 
-    /* Imposta tutti gli elementi in bianco e nero durante la stampa */
-    * {
-        filter: grayscale(100%);
-    }
+    // Ottieni l'array di oggetti dalla chiave dinamica
+    const orderItems = orderData[orderKey];
 
-    /* Nascondi il bottone di chiusura durante la stampa */
-    #close-button {
-        display: none;
-    }
-</style>
-`;
+    // Ottieni il totale
+    const GragrandTotal = grandTotal;
 
-  // Funzione per stampare i dati dell'ordine
-  function printOrderData(PrintHtmlContent) {
+    // Creare HTML dinamico con i dati mappati
+    let htmlContent = `<h4 class="text-base text-default-700 font-bold">Ordine N.${idOrdineCreato}</h4>`;
+    const noteHtml = `
+    <div>
+    <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm text-primary">TOTALE: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800 text-primary">${GragrandTotal} €</span></h4>
+    </div>
+  `;
+    orderItems.forEach((item) => {
+      htmlContent += `
+
+          <span>${item.name}</span>
+          <span> x${item.quantity}</span>
+          <span> ${item.price} €</span>
+          `;
+    });
+    htmlContent += noteHtml;
+    // Impostazione della larghezza della pagina da stampare a 58mm con margini
+    const style = `
+  <style media="print">
+
+  </style>
+  `;
     const printWindow = window.open("", "_blank");
     const doc = printWindow.document;
-
     // Aggiungi stile per la larghezza della pagina
     doc.write(style);
-
     // Aggiungi il contenuto HTML al documento di stampa
     doc.open();
-    doc.write(PrintHtmlContent);
+    doc.write(htmlContent);
     doc.close();
-
     // Avvia la finestra di dialogo di stampa del browser
     printWindow.print();
     printWindow.close();
   }
+
+  // Funzione per stampare i dati dell'ordine
+  // function printOrderData(PrintHtmlContent) {
+  //   const printWindow = window.open("", "_blank");
+  //   const doc = printWindow.document;
+
+  //   // Aggiungi stile per la larghezza della pagina
+  //   doc.write(style);
+
+  //   // Aggiungi il contenuto HTML al documento di stampa
+  //   doc.open();
+  //   doc.write(PrintHtmlContent);
+  //   doc.close();
+
+  //   // Avvia la finestra di dialogo di stampa del browser
+  //   printWindow.print();
+  //   printWindow.close();
+  // }
 
   // Funzione per caricare i dati dal localStorage
   // function loadFromLocalStorage() {
@@ -731,7 +755,7 @@ function initializeApp(json) {
               <span class="text-default-800 text-xl font-semibold line-clamp-1 after:absolute after:inset-0">${oggetto.name}</span>
               <i class="text-m text-default-500">${oggetto.desc}</i>
               <div class="border border-default-200 inline-flex justify-between mt-2 p-1 relative rounded-full z-10 truncate overflow-auto">
-              <input id="input_${menuId}" type="text" placeholder="Inserisci modifiche" class="border-none h-3 w-full truncate overflow-auto" />
+              <input id="input_${menuId}" type="text" placeholder="Inserisci modifiche" class="bg-white border-none dark:bg-default-50 h-3 overflow-auto truncate w-full" />
               </div>
             </div>
   
