@@ -585,39 +585,73 @@ function initializeApp(json) {
     const GragrandTotal = grandTotal;
 
     // Creare HTML dinamico con i dati mappati
-    let htmlContent = `<h4 class="text-base text-default-700 font-bold">Ordine N.${idOrdineCreato}</h4>`;
-    const noteHtml = `
-    <div>
-    <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm text-primary">TOTALE: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800 text-primary">${GragrandTotal} €</span></h4>
-    </div>
-  `;
+    let htmlContent = `<div id="print-content">`;
+    htmlContent += `<h4 class="text-base text-default-700 font-bold">Ordine N.${idOrdineCreato}</h4>`;
     orderItems.forEach((item) => {
       htmlContent += `
-
-          <span>${item.name}</span>
-          <span> x${item.quantity}</span>
-          <span> ${item.price} €</span>
-          `;
+         <div>
+             <span>${item.name}</span>
+             <span> x${item.quantity}</span>
+             <span> ${item.price} €</span>
+         </div>
+     `;
     });
-    htmlContent += noteHtml;
-    // Impostazione della larghezza della pagina da stampare a 58mm con margini
-    const style = `
-  <style media="print">
+    htmlContent += `
+     <div>
+         <h4 class="mt-1.5 mb-1.5 text-default-600 text-sm text-primary">TOTALE: <span class="px-5 py-3 whitespace-nowrap text-sm text-default-800 text-primary">${GragrandTotal} €</span></h4>
+     </div>
+ `;
+    htmlContent += `</div>`;
 
-  </style>
-  `;
-    const printWindow = window.open("", "_blank");
-    const doc = printWindow.document;
-    // Aggiungi stile per la larghezza della pagina
-    doc.write(style);
-    // Aggiungi il contenuto HTML al documento di stampa
-    doc.open();
-    doc.write(htmlContent);
-    doc.close();
-    // Avvia la finestra di dialogo di stampa del browser
-    printWindow.print();
-    printWindow.close();
+    // Dati da inviare al backend
+    const requestData = {
+      orderContent: htmlContent, // Contenuto HTML dell'ordine
+    };
+
+    // Invia la richiesta di stampa
+    sendPrintRequest(requestData);
+
+    // Creazione di un elemento div temporaneo nel DOM
+    const printContainer = document.createElement("div");
+    printContainer.innerHTML = htmlContent;
+    document.body.appendChild(printContainer);
+
+    // Stampare l'elemento HTML utilizzando Print.js con la stampante specificata
+    printJS({
+      printable: "print-content", // Utilizza l'ID del div come riferimento
+      type: "html",
+      showModal: false, // Impedisci l'apertura della finestra di dialogo di stampa del browser
+      printer: "NomeStampanteDiRete", // Specifica il nome della stampante di rete desiderata
+    });
+
+    // Rimuovere l'elemento div temporaneo dal DOM dopo la stampa
+    document.body.removeChild(printContainer);
   }
+
+  // function sendPrintRequest(requestData) {
+  //   // Esegui una richiesta HTTP POST al backend
+  //   fetch("http://192.168.1.9:3000/api/print", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(requestData),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Errore durante la richiesta al server");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Risposta dal server:", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Errore durante la chiamata API /api/print:", error);
+  //       // Gestisci l'errore qui
+  //       // Potresti mostrare un messaggio all'utente o registrare l'errore
+  //     });
+  // }
 
   // Funzione per stampare i dati dell'ordine
   // function printOrderData(PrintHtmlContent) {
