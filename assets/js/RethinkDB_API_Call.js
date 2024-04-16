@@ -613,45 +613,14 @@ function initializeApp(json) {
       printable: "print-content", // Utilizza l'ID del div come riferimento
       type: "html",
       showModal: false, // Impedisci l'apertura della finestra di dialogo di stampa del browser
-      printer: "NomeStampanteDiRete", // Specifica il nome della stampante di rete desiderata
+      printer: "POS-58", // Specifica il nome della stampante di rete desiderata
     });
 
     // Rimuovere l'elemento div temporaneo dal DOM dopo la stampa
     document.body.removeChild(printContainer);
-
-    // Dati da inviare al backend
-    const requestData = {
-      orderContent: htmlContent, // Contenuto HTML dell'ordine
-    };
-
-    // Invia la richiesta di stampa
-    sendPrintRequest(requestData);
   }
 
-  function sendPrintRequest(htmlContent) {
-    // Esegui una richiesta HTTP POST al backend
-    fetch("http://localhost:3000/api/print", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ htmlContent }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Errore durante la richiesta al server");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Risposta dal server:", data);
-      })
-      .catch((error) => {
-        console.error("Errore durante la chiamata API /api/print:", error);
-        // Gestisci l'errore qui
-        // Potresti mostrare un messaggio all'utente o registrare l'errore
-      });
-  }
+
 
   // Funzione per stampare i dati dell'ordine
   // function printOrderData(PrintHtmlContent) {
