@@ -590,9 +590,9 @@ function initializeApp(json) {
     orderItems.forEach((item) => {
       htmlContent += `
          <div>
-             <span>${item.name}</span>
-             <span> x${item.quantity}</span>
-             <span> ${item.price} €</span>
+            <span>${item.quantity}</span>
+            <span>${item.name}</span>
+            <span style="margin-left:20px">      ${item.price} €</span>
          </div>
      `;
     });
@@ -602,14 +602,6 @@ function initializeApp(json) {
      </div>
  `;
     htmlContent += `</div>`;
-
-    // Dati da inviare al backend
-    const requestData = {
-      orderContent: htmlContent, // Contenuto HTML dell'ordine
-    };
-
-    // Invia la richiesta di stampa
-    sendPrintRequest(requestData);
 
     // Creazione di un elemento div temporaneo nel DOM
     const printContainer = document.createElement("div");
@@ -626,32 +618,40 @@ function initializeApp(json) {
 
     // Rimuovere l'elemento div temporaneo dal DOM dopo la stampa
     document.body.removeChild(printContainer);
+
+    // Dati da inviare al backend
+    const requestData = {
+      orderContent: htmlContent, // Contenuto HTML dell'ordine
+    };
+
+    // Invia la richiesta di stampa
+    sendPrintRequest(requestData);
   }
 
-  // function sendPrintRequest(requestData) {
-  //   // Esegui una richiesta HTTP POST al backend
-  //   fetch("http://192.168.1.9:3000/api/print", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(requestData),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Errore durante la richiesta al server");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("Risposta dal server:", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Errore durante la chiamata API /api/print:", error);
-  //       // Gestisci l'errore qui
-  //       // Potresti mostrare un messaggio all'utente o registrare l'errore
-  //     });
-  // }
+  function sendPrintRequest(htmlContent) {
+    // Esegui una richiesta HTTP POST al backend
+    fetch("http://localhost:3000/api/print", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ htmlContent }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Errore durante la richiesta al server");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Risposta dal server:", data);
+      })
+      .catch((error) => {
+        console.error("Errore durante la chiamata API /api/print:", error);
+        // Gestisci l'errore qui
+        // Potresti mostrare un messaggio all'utente o registrare l'errore
+      });
+  }
 
   // Funzione per stampare i dati dell'ordine
   // function printOrderData(PrintHtmlContent) {
