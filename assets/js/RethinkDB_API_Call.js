@@ -603,10 +603,17 @@ function initializeApp(json) {
  `;
     htmlContent += `</div>`;
 
+    // Chiamata alla funzione per inviare i dati al server
+    //sendDataToServer();
+
+
     // Creazione di un elemento div temporaneo nel DOM
     const printContainer = document.createElement("div");
     printContainer.innerHTML = htmlContent;
     document.body.appendChild(printContainer);
+
+    // Chiamata alla funzione per inviare l'HTML  Comanda al server
+    //sendHTMLToServer(htmlContent);
 
     // Stampare l'elemento HTML utilizzando Print.js con la stampante specificata
     printJS({
@@ -619,6 +626,82 @@ function initializeApp(json) {
     // Rimuovere l'elemento div temporaneo dal DOM dopo la stampa
     document.body.removeChild(printContainer);
   }
+
+
+  // Test funzione per inviare dati al server
+  // const sendDataToServer = async () => {
+  //   try {
+  //     // Dati da inviare al server
+  //     const data = {
+  //       nome: 'Mario',
+  //       cognome: 'Rossi',
+  //       eta: 30
+  //     };
+
+  //     // Effettua una richiesta POST al server
+  //     const response = await fetch('http://localhost:3000/api/sendData', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(data)
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Errore durante la richiesta al server');
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('Risposta dal server:', responseData);
+  //   } catch (error) {
+  //     console.error('Si è verificato un errore:', error.message);
+  //   }
+  // };
+
+
+
+  // Invio Html per stampa da remoto Comanda
+  // const sendHTMLToServer = async (htmlContent) => {
+  //   try {
+  //     // Effettua una richiesta POST al server
+  //     const response = await fetch('http://localhost:3000/api/sendHTML', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'text/plain' // Imposta il tipo di contenuto come testo semplice
+  //       },
+  //       body: getPlainTextFromHTML(htmlContent) // Converti l'HTML in testo semplice prima di inviarlo
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Errore durante la richiesta al server');
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('Risposta dal server:', responseData);
+  //     console.log('htmlContent:', htmlContent);
+  //   } catch (error) {
+  //     console.error('Si è verificato un errore:', error.message);
+  //   }
+  // };
+
+  // // Funzione per estrarre il testo dal contenuto HTML
+  // const getPlainTextFromHTML = (htmlContent) => {
+  //   // Crea un elemento HTML temporaneo
+  //   const tempElement = document.createElement('div');
+  //   // Imposta il contenuto HTML dell'elemento temporaneo
+  //   tempElement.innerHTML = htmlContent;
+  //   // Estrai il testo dall'elemento temporaneo
+  //   const plainText = tempElement.textContent || tempElement.innerText || '';
+  //   // Rimuovi l'elemento temporaneo
+  //   tempElement.remove();
+  //   console.log(plainText);
+  //   // Ritorna il testo estratto
+  //   return plainText;
+
+  // };
+
+
+
 
 
 
